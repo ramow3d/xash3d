@@ -1017,6 +1017,23 @@ static void R_CheckFog( void )
 
 	if( RI.refdef.waterlevel < 3 ) return;
 
+	// check for env_fog entity in the map
+	bool found_fog_entity = false;
+	for (i = 0; i < cl.worldmodel->num_entities; i++) {
+		cl_entity_t* e = cl_entities + i;
+		if (!e->model || e->model->type != mod_alias) {
+			continue;
+		}
+		if (!strcmp(e->model->name, "env_fog")) {
+			found_fog_entity = true;
+			break;
+		}
+	}
+
+	if (!found_fog_entity) {
+		return;
+	}
+
 	if( !IsLiquidContents( RI.cached_contents ) && IsLiquidContents( cnt ))
 	{
 		tex = NULL;
