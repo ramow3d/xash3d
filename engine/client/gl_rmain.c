@@ -997,7 +997,7 @@ static void R_CheckFog( void )
 {
     cl_entity_t* ent;
     gltexture_t* tex;
-    int i, cnt, count;
+    int i, cnt;
 
     RI.fogEnabled = false;
 
@@ -1006,9 +1006,9 @@ static void R_CheckFog( void )
 
     // Look for env_fog entity
     int found_fog_entity = 0;
-    for (i = 0; i < cl_parse_entities_count; i++)
+    for (i = 0; i < RI.num_entities; i++)
     {
-        ent = &cl_parse_entities[i];
+        ent = RI.entities + i;
         if (ent->model && ent->model->type == mod_alias &&
             Q_stricmp(ent->model->name, "env_fog") == 0)
         {
@@ -1036,50 +1036,34 @@ static void R_CheckFog( void )
     {
         tex = NULL;
 
-        // check for water texture
-        if( ent && ent->model && ent->model->type == mod_brush )
+        // Find a texture with fog parameters
+        count = 0;
+        for( i = 0; i < numgltextures; i++ )
         {
-            msurface_t* surf;
-
-            count = ent->model->nummodelsurfaces;
-
-            for( i = 0, surf = &ent->model->surfaces[ent->model->firstmodelsurface]; i < count; i++, surf++ )
+            if( gltextures[i].name[0] == '{' && Q_stricmp(gltextures[i].name + 1, ent->message) == 0 )
             {
-                if( surf->flags & SURF_DRAWTURB && surf->texinfo && surf->texinfo->texture )
-                {
-                    tex = R_GetTexture( surf->texinfo->texture->gl_texturenum );
-                    RI.cached_contents = ent->curstate.skin;
-                    break;
-                }
+                tex = gltextures + i;
+                count++;
             }
         }
-        else
-        {
-            tex = R_RecursiveFindWaterTexture( r_viewleaf->parent, NULL, false );
-           
+        if( count > 1 )
+            tex = NULL;
+    }
+    else
+    {
+        tex = R_FindFog();
 
-					RI.cached_contents = ent->curstate.skin;
-					break;
-				}
-			}
-		}
-		else
-		{
-			tex = R_RecursiveFindWaterTexture( r_viewleaf->parent, NULL, false );
-			if( tex ) RI.cached_contents = r_viewleaf->contents;
-		}
+    if( !tex ) return; // no valid fogs
 
-		if( !tex ) return;	// no valid fogs
+    RI.fogColor[0] = tex->fogParams[0] / 255.0f;
+    RI.fogColor[1] = tex->fogParams[1] / 255.0f;
+    RI.fogColor[2] = tex->fogParams[2] / 255.0f;
+    RI.fogDensity = tex->fogParams[3] * 0.000025f;
+    RI.fogStart = RI.fogEnd = 0.0f;
+    RI.fogCustom = false;
+    RI.fogEnabled = true;
+}
 
-		// copy fog params
-		RI.fogColor[0] = tex->fogParams[0] / 255.0f;
-		RI.fogColor[1] = tex->fogParams[1] / 255.0f;
-		RI.fogColor[2] = tex->fogParams[2] / 255.0f;
-		RI.fogDensity = tex->fogParams[3] * 0.000025f;
-		RI.fogStart = RI.fogEnd = 0.0f;
-		RI.fogCustom = false;
-		RI.fogEnabled = true;
-	}
 	else
 	{
 		RI.fogCustom = false;
