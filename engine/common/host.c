@@ -689,7 +689,7 @@ qboolean Host_FilterTime( float time )
 	host.realframetime = bound( MIN_FRAMETIME, host.frametime, MAX_FRAMETIME );
 	oldtime = host.realtime;
 
-	if( host_framerate->value > 0 && ( Host_IsLocalGame()))
+	if( host_framerate->value > 0 )
 	{
 		fps = host_framerate->value;
 		if( fps > 1 ) fps = 1.0f / fps;
@@ -1244,9 +1244,9 @@ int EXPORT Host_Main( int argc, const char **argv, const char *progname, int bCh
 
 	rcon_password = Cvar_Get( "rcon_password", "", CVAR_PROTECTED, "remote connect password" );
 	host_cheats = Cvar_Get( "sv_cheats", "0", CVAR_LATCH, "allow usage of cheat commands and variables" );
-	host_maxfps = Cvar_Get( "fps_max", "72", CVAR_ARCHIVE, "host fps upper limit" );
+	host_maxfps = Cvar_Get( "fps_max", "61", CVAR_ARCHIVE, "host fps upper limit" );
 	host_sleeptime = Cvar_Get( "sleeptime", DEFAULT_SLEEPTIME, CVAR_ARCHIVE|CVAR_LOCALONLY, "higher value means lower accuracy" );
-	host_framerate = Cvar_Get( "host_framerate", "0", 0, "locks frame timing to this value in seconds" );  
+	host_framerate = Cvar_Get( "host_framerate", "0", CVAR_ARCHIVE, "locks frame timing to this value in seconds" );  
 	host_serverstate = Cvar_Get( "host_serverstate", "0", CVAR_INIT, "displays current server state" );
 	host_gameloaded = Cvar_Get( "host_gameloaded", "0", CVAR_INIT, "indicates a loaded game library" );
 	host_clientloaded = Cvar_Get( "host_clientloaded", "0", CVAR_INIT, "indicates a loaded client library" );
