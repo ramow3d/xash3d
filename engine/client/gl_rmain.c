@@ -995,61 +995,69 @@ from underwater leaf (idea: XaeroX)
 */
 static void R_CheckFog( void )
 {
-	cl_entity_t	*ent;
-	gltexture_t	*tex;
-	int		i, cnt, count;
+    cl_entity_t* ent;
+    gltexture_t* tex;
+    int i, cnt, count;
 
-	RI.fogEnabled = false;
+    RI.fogEnabled = false;
 
-	if( RI.refdef.waterlevel < 2 || !RI.drawWorld || !r_viewleaf )
-		return;
+    if( RI.refdef.waterlevel < 2 || !RI.drawWorld || !r_viewleaf )
+        return;
 
-	ent = CL_GetWaterEntity( RI.vieworg );
-	if( ent && ent->model && ent->model->type == mod_brush && ent->curstate.skin < 0 )
-		cnt = ent->curstate.skin;
-	else cnt = r_viewleaf->contents;
+    // Look for env_fog entity
+    int found_fog_entity = 0;
+    for (i = 0; i < cl_parse_entities_count; i++)
+    {
+        ent = &cl_parse_entities[i];
+        if (ent->model && ent->model->type == mod_alias &&
+            Q_stricmp(ent->model->name, "env_fog") == 0)
+        {
+            found_fog_entity = 1;
+            break;
+        }
+    }
+    if (!found_fog_entity)
+        return;
 
-	if( IsLiquidContents( RI.cached_contents ) && !IsLiquidContents( cnt ))
-	{
-		RI.cached_contents = CONTENTS_EMPTY;
-		return;
-	}
+    ent = CL_GetWaterEntity( RI.vieworg );
+    if( ent && ent->model && ent->model->type == mod_brush && ent->curstate.skin < 0 )
+        cnt = ent->curstate.skin;
+    else cnt = r_viewleaf->contents;
 
-	if( RI.refdef.waterlevel < 3 ) return;
+    if( IsLiquidContents( RI.cached_contents ) && !IsLiquidContents( cnt ))
+    {
+        RI.cached_contents = CONTENTS_EMPTY;
+        return;
+    }
 
-	// check for env_fog entity in the map
-	bool found_fog_entity = false;
-	for (i = 0; i < cl.worldmodel->num_entities; i++) {
-		cl_entity_t* e = cl_entities + i;
-		if (!e->model || e->model->type != mod_alias) {
-			continue;
-		}
-		if (!strcmp(e->model->name, "env_fog")) {
-			found_fog_entity = true;
-			break;
-		}
-	}
+    if( RI.refdef.waterlevel < 3 ) return;
 
-	if (!found_fog_entity) {
-		return;
-	}
+    if( !IsLiquidContents( RI.cached_contents ) && IsLiquidContents( cnt ))
+    {
+        tex = NULL;
 
-	if( !IsLiquidContents( RI.cached_contents ) && IsLiquidContents( cnt ))
-	{
-		tex = NULL;
+        // check for water texture
+        if( ent && ent->model && ent->model->type == mod_brush )
+        {
+            msurface_t* surf;
 
-		// check for water texture
-		if( ent && ent->model && ent->model->type == mod_brush )
-		{
-			msurface_t	*surf;
-	
-			count = ent->model->nummodelsurfaces;
+            count = ent->model->nummodelsurfaces;
 
-			for( i = 0, surf = &ent->model->surfaces[ent->model->firstmodelsurface]; i < count; i++, surf++ )
-			{
-				if( surf->flags & SURF_DRAWTURB && surf->texinfo && surf->texinfo->texture )
-				{
-					tex = R_GetTexture( surf->texinfo->texture->gl_texturenum );
+            for( i = 0, surf = &ent->model->surfaces[ent->model->firstmodelsurface]; i < count; i++, surf++ )
+            {
+                if( surf->flags & SURF_DRAWTURB && surf->texinfo && surf->texinfo->texture )
+                {
+                    tex = R_GetTexture( surf->texinfo->texture->gl_texturenum );
+                    RI.cached_contents = ent->curstate.skin;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            tex = R_RecursiveFindWaterTexture( r_viewleaf->parent, NULL, false );
+           
+
 					RI.cached_contents = ent->curstate.skin;
 					break;
 				}
