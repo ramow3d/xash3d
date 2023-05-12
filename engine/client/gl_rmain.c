@@ -995,75 +995,66 @@ from underwater leaf (idea: XaeroX)
 */
 static void R_CheckFog( void )
 {
-    cl_entity_t* ent;
-    gltexture_t* tex;
-    int i, cnt;
+	cl_entity_t	*ent;
+	gltexture_t	*tex;
+	int		i, cnt, count;
 
-    RI.fogEnabled = false;
+	RI.fogEnabled = false;
 
-    if( RI.refdef.waterlevel < 2 || !RI.drawWorld || !r_viewleaf )
-        return;
+	if( RI.refdef.waterlevel < 2 || !RI.drawWorld || !r_viewleaf )
+		return;
 
-    // Look for env_fog entity
-    int found_fog_entity = 0;
-    for (i = 0; i < RI.num_entities; i++)
-    {
-        ent = RI.entities + i;
-        if (ent->model && ent->model->type == mod_alias &&
-            Q_stricmp(ent->model->name, "env_fog") == 0)
-        {
-            found_fog_entity = 1;
-            break;
-        }
-    }
-    if (!found_fog_entity)
-        return;
+	ent = CL_GetWaterEntity( RI.vieworg );
+	if( ent && ent->model && ent->model->type == mod_brush && ent->curstate.skin < 0 )
+		cnt = ent->curstate.skin;
+	else cnt = r_viewleaf->contents;
 
-    ent = CL_GetWaterEntity( RI.vieworg );
-    if( ent && ent->model && ent->model->type == mod_brush && ent->curstate.skin < 0 )
-        cnt = ent->curstate.skin;
-    else cnt = r_viewleaf->contents;
+	if( IsLiquidContents( RI.cached_contents ) && !IsLiquidContents( cnt ))
+	{
+		RI.cached_contents = CONTENTS_EMPTY;
+		return;
+	}
 
-    if( IsLiquidContents( RI.cached_contents ) && !IsLiquidContents( cnt ))
-    {
-        RI.cached_contents = CONTENTS_EMPTY;
-        return;
-    }
+	if( RI.refdef.waterlevel < 3 ) return;
 
-    if( RI.refdef.waterlevel < 3 ) return;
+	if( !IsLiquidContents( RI.cached_contents ) && IsLiquidContents( cnt ))
+	{
+		tex = NULL;
 
-    if( !IsLiquidContents( RI.cached_contents ) && IsLiquidContents( cnt ))
-    {
-        tex = NULL;
+		// check for water texture
+		if( ent && ent->model && ent->model->type == mod_brush )
+		{
+			msurface_t	*surf;
+	
+			count = ent->model->nummodelsurfaces;
 
-        // Find a texture with fog parameters
-        count = 0;
-        for( i = 0; i < numgltextures; i++ )
-        {
-            if( gltextures[i].name[0] == '{' && Q_stricmp(gltextures[i].name + 1, ent->message) == 0 )
-            {
-                tex = gltextures + i;
-                count++;
-            }
-        }
-        if( count > 1 )
-            tex = NULL;
-    }
-    else
-    {
-        tex = R_FindFog();
+			for( i = 0, surf = &ent->model->surfaces[ent->model->firstmodelsurface]; i < count; i++, surf++ )
+			{
+				if( surf->flags & SURF_DRAWTURB && surf->texinfo && surf->texinfo->texture )
+				{
+					tex = R_GetTexture( surf->texinfo->texture->gl_texturenum );
+					RI.cached_contents = ent->curstate.skin;
+					break;
+				}
+			}
+		}
+		else
+		{
+			tex = R_RecursiveFindWaterTexture( r_viewleaf->parent, NULL, false );
+			if( tex ) RI.cached_contents = r_viewleaf->contents;
+		}
 
-    if( !tex ) return; // no valid fogs
+		if( !tex ) return;	// no valid fogs
 
-    RI.fogColor[0] = tex->fogParams[0] / 255.0f;
-    RI.fogColor[1] = tex->fogParams[1] / 255.0f;
-    RI.fogColor[2] = tex->fogParams[2] / 255.0f;
-    RI.fogDensity = tex->fogParams[3] * 0.000025f;
-    RI.fogStart = RI.fogEnd = 0.0f;
-    RI.fogCustom = false;
-    RI.fogEnabled = true;
-}
-
+		// copy fog params
+		RI.fogColor[0] = tex->fogParams[0] / 255.0f;
+		RI.fogColor[1] = tex->fogParams[1] / 255.0f;
+		RI.fogColor[2] = tex->fogParams[2] / 255.0f;
+		RI.fogDensity = tex->fogParams[3] * 0.000025f;
+		RI.fogStart = RI.fogEnd = 0.0f;
+		RI.fogCustom = false;
+		RI.fogEnabled = true;
+	}
 	else
 	{
 		RI.fogCustom = false;
