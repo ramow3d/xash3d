@@ -26,7 +26,7 @@ set(XASH_ENGINE xash) # Lib name
 
 fwgs_fix_default_msvc_settings()
 file(GLOB_RECURSE XASH_ENGINE_SOURCES         common/*.c server/*.c ) # Minimal sources
-file(GLOB_RECURSE XASH_ENGINE_WIN32_SOURCES   platform/win32/*.c) # Win32 only sources
+file(GLOB_RECURSE XASH_ENGINE_WIN32_SOURCES   ../game_launch/game.rc platform/win32/*.c) # Win32 only sources
 file(GLOB_RECURSE XASH_ENGINE_SDL_SOURCES     platform/sdl/*.c) # SDL version sources
 #file(GLOB_RECURSE XASH_ENGINE_POSIX_SOURCES     platform/posix/*.c) # Posix sources
 file(GLOB_RECURSE XASH_ENGINE_STUB_SOURCES     platform/stub/*.c) # Stub sources
@@ -125,12 +125,19 @@ endif()
 if(WIN32 AND NOT XASH_64BIT)
 	add_definitions( -DDBGHELP -DXASH_W32CON) # dbghelp crashhandler
 	if(MINGW)
-		target_link_libraries(${XASH_ENGINE} -luser32 -lkernel32 -lgdi32 -ldbghelp -lpsapi)
+		target_link_libraries(${XASH_ENGINE} -luser32 -lkernel32 -lgdi32 -lWs2_32 -ldbghelp -lpsapi)
+	elseif(MSVC)
+		target_link_libraries(${XASH_ENGINE} user32.lib kernel32.lib gdi32.lib Ws2_32.lib dbghelp.lib psapi.lib)
 	endif()
 else()
 	if(XASH_USE_SELECT)
 		add_definitions(-DUSE_SELECT)
 	endif()
+        if(MINGW)
+                target_link_libraries(${XASH_ENGINE} -luser32 -lkernel32 -lgdi32 -lWs2_32)
+        elseif(MSVC)
+                target_link_libraries(${XASH_ENGINE} user32.lib kernel32.lib gdi32.lib Ws2_32.lib)
+        endif()
 	add_definitions(-DCOLORIZE_CONSOLE)
 endif()
 

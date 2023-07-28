@@ -106,7 +106,7 @@ void SV_GetChallenge( netadr_t from )
 	if( i == MAX_CHALLENGES )
 	{
 		// this is the first time this client has asked for a challenge
-		svs.challenges[oldest].challenge = ((uint)rand() << 16) ^ rand();
+		svs.challenges[oldest].challenge = ((uint32_t)rand() << 16) ^ rand();
 		svs.challenges[oldest].adr = from;
 		svs.challenges[oldest].time = host.realtime;
 		svs.challenges[oldest].connected = false;
@@ -419,7 +419,7 @@ gotnewcl:
 
 	if( id[0] )
 	{
-		sscanf( id, "%llx", &newcl->WonID );
+		sscanf( id, "%"PRIx64, &newcl->WonID );
 		Q_strncpy( cl->auth_id, id, sizeof( cl->auth_id ) );
 	}
 
@@ -809,7 +809,7 @@ const char *SV_GetClientIDString( sv_client_t *cl )
 	if( cl->authentication_method == 0 )
 	{
 		// probably some old compatibility code.
-		Q_snprintf( result, sizeof( result ), "%010llu", cl->WonID );
+		Q_snprintf( result, sizeof( result ), "%010"PRIu64, cl->WonID );
 	}
 	else if( cl->authentication_method == 2 )
 	{
@@ -827,7 +827,7 @@ const char *SV_GetClientIDString( sv_client_t *cl )
 		}
 		else
 		{
-			Q_snprintf( result, sizeof( result ), "VALVE_%010llu", cl->WonID );
+			Q_snprintf( result, sizeof( result ), "VALVE_%010"PRIu64, cl->WonID );
 		}
 	}
 	else Q_strncpy( result, "UNKNOWN", sizeof( result ));
@@ -929,7 +929,7 @@ void SV_Info( netadr_t from, int version )
 
 	if( version != PROTOCOL_VERSION )
 	{
-		Q_snprintf( string, sizeof( string ), "%s: wrong version\n", hostname->string );
+		Q_snprintf( string, sizeof( string ), "%s^7: wrong version\n", hostname->string );
 	}
 	else
 	{
@@ -2262,6 +2262,10 @@ static qboolean SV_ShouldUpdateUserinfo( sv_client_t *cl )
 	if( !sv_userinfo_enable_penalty->value )
 		return allow;
 
+	// we dont care about singleplayer
+	if( sv_maxclients->integer == 1 )
+		return allow;
+
 	if( cl->fakeclient )
 		return allow;
 
@@ -2318,9 +2322,9 @@ static void SV_UserinfoChanged( sv_client_t *cl, const char *userinfo )
 
 	if( !userinfo || !userinfo[0] ) return; // ignored
 
-	if( !Info_IsValid( userinfo ) ) return; // ignored
-
 	if( !SV_ShouldUpdateUserinfo( cl )) return; // ignored
+
+	if ( !Info_IsValid( userinfo ) ) return; // ignored
 
 	Q_strncpy( cl->userinfo, userinfo, sizeof( cl->userinfo ));
 
@@ -2603,7 +2607,7 @@ static void SV_Notarget_f( sv_client_t *cl )
 
 static void SV_SendBuildInfo_f( sv_client_t *cl )
 {
-	SV_ClientPrintf( cl, PRINT_HIGH, "Server running Xash3D FWGS %s (build %i-%s, %s-%s)\n", XASH_VERSION, Q_buildnum(), Q_buildcommit(), Q_buildos(), Q_buildarch() );
+	SV_ClientPrintf( cl, PRINT_HIGH, "Server running Xash3D-NG %s (build %i-%s, %s-%s)\n", XASH_VERSION, Q_buildnum(), Q_buildcommit(), Q_buildos(), Q_buildarch() );
 }
 
 edict_t *pfnFindEntityInSphere( edict_t *pStartEdict, const float *org, float flRadius );
