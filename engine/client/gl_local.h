@@ -33,7 +33,7 @@ extern byte	*r_temppool;
 #define BLOCK_SIZE_DEFAULT	128		// for keep backward compatibility
 #define BLOCK_SIZE_MAX	1024
 
-#define MAX_TEXTURES	4529
+#define MAX_TEXTURES	8192
 #define MAX_DETAIL_TEXTURES	256
 #define MAX_LIGHTMAPS	256
 #define SUBDIVIDE_SIZE	64
