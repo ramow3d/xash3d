@@ -1,4 +1,4 @@
-name: Build for linux
+name: Build for windows
 
 on:
   workflow_dispatch:
@@ -23,7 +23,7 @@ jobs:
            sudo apt install build-essential cmake make gcc g++ gcc-multilib g++-multilib gcc-mingw-w64 libsdl2-dev
            bash scripts/build_mingw_engine.sh
    - name: Upload artifacts
-     uses: actions/upload-artifact@v2
+     uses: actions/upload-artifact@v3
      with:
           name: compiled
           path: mingw-build/
