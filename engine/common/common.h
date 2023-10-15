@@ -198,11 +198,11 @@ typedef enum
 #define XASH_UPDATE_PAGE "https://github.com/tyabus/xash3d/releases/latest"
 
 // PERFORMANCE INFO
-#define MIN_FPS         	15.0		// host minimum fps value for maxfps.
-#define MAX_FPS         	500.0		// upper limit for maxfps.
+#define MIN_FPS         	1.0		// host minimum fps value for maxfps.
+#define MAX_FPS         	9999999.0		// upper limit for maxfps.
 
-#define MAX_FRAMETIME	0.1
-#define MIN_FRAMETIME	0.000001
+#define MAX_FRAMETIME	9999999999999.0
+#define MIN_FRAMETIME	0.0
 
 #define MAX_SLEEPTIME	10
 
