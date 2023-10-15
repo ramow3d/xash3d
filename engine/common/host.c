@@ -674,16 +674,16 @@ qboolean Host_FilterTime( float time )
 		float	minframetime;
 
 		// limit fps to within tolerable range
-		fps = bound( MIN_FPS, fps, MAX_FPS );
+		//fps = bound( MIN_FPS, fps, MAX_FPS );
 
 		minframetime = 1.0f / fps;
 
-		if(( host.realtime - oldtime ) < minframetime )
+		/*if(( host.realtime - oldtime ) < minframetime )
 		{
 			// framerate is too high
 			//Sys_Sleep( 2000 * ( minframetime - ( host.realtime - oldtime ) ) );
 			return false;
-		}
+		}*/
 	}
 
 	host.frametime = host.realtime - oldtime;
