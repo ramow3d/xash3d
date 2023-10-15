@@ -195,11 +195,11 @@ typedef enum
 #define XASH_VERSION	"0.19.4"		// engine current version
 
 // generic update page, see ShellExecute
-#define XASH_UPDATE_PAGE "https://github.com/tyabus/xash3d/releases/latest"
+#define XASH_UPDATE_PAGE "https://github.com/hasandramali/xash3d-android-project/releases/latest"
 
 // PERFORMANCE INFO
 #define MIN_FPS         	1.0		// host minimum fps value for maxfps.
-#define MAX_FPS         	9999999.0		// upper limit for maxfps.
+#define MAX_FPS         	9999999999999.0		// upper limit for maxfps.
 
 #define MAX_FRAMETIME	9999999999999.0
 #define MIN_FRAMETIME	0.0
