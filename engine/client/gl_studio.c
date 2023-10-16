@@ -2969,6 +2969,13 @@ static void GAME_EXPORT R_StudioSetupRenderer( int rendermode )
 	// was done before, in R_DrawViewModel
 	if( g_iBackFaceCull )
 		GL_FrontFace( !glState.frontFace );
+
+	if ( Cvar_VariableInteger ( "cl_seebehindwall" ) ) 
+	{
+		pglDisable( GL_DEPTH_TEST );
+		pglDepthRange( 0.0, 0.5 );
+	}
+	else if( !pglIsEnabled( GL_DEPTH_TEST ) ) pglEnable( GL_DEPTH_TEST );
 }
 
 /*
