@@ -68,8 +68,6 @@ convar_t	*cl_nat;
 convar_t	*hud_scale;
 convar_t	*cl_maxpacket;
 convar_t	*cl_maxpayload;
-convar_t	*xash3d_per_load_screen;
-convar_t	*xash3d_boost_fps;
 convar_t	*cl_seebehindwall;
 convar_t    *r_bmodelinterp;
 
@@ -2207,7 +2205,7 @@ void CL_InitLocal( void )
 	cl_nodelta = Cvar_Get ("cl_nodelta", "0", 0, "disable delta-compression for usercommands" );
 	cl_idealpitchscale = Cvar_Get( "cl_idealpitchscale", "0.8", 0, "how much to look up/down slopes and stairs when not using freelook" );
 	cl_solid_players = Cvar_Get( "cl_solid_players", "1", 0, "make all players non-solid (can't traceline them)" );
-	cl_interp = Cvar_Get( "ex_interp", "0.01", 0, "interpolate object positions starting this many seconds in past" );
+	cl_interp = Cvar_Get( "ex_interp", "0.01", CVAR_ARCHIVE, "interpolate object positions starting this many seconds in past" );
 	//Cvar_Get( "ex_maxerrordistance", "0", 0, "" );
 	cl_allow_fragment = Cvar_Get( "cl_allow_fragment", "0", CVAR_ARCHIVE|CVAR_PROTECTED, "allow downloading files directly from game server (unstable & unsafe)" );
 	cl_timeout = Cvar_Get( "cl_timeout", "60", 0, "connect timeout (in seconds)" );
@@ -2255,8 +2253,6 @@ void CL_InitLocal( void )
 
 	Cvar_Get( "skin", "", CVAR_USERINFO, "player skin" ); // XDM 3.3 want this cvar
 	Cvar_Get( "cl_background", "0", CVAR_READ_ONLY, "indicates that background map is running" );
-	Cvar_Get( "xash3d_per_load_screen", "200", CVAR_ARCHIVE, "screen load count in this value" );
-	Cvar_Get( "xash3d_boost_fps", "0", CVAR_ARCHIVE, "fps boost (fake)" );
 	Cvar_Get( "cl_seebehindwall", "0", CVAR_ARCHIVE, "See players behind the wall" );
 	Cvar_Get( "cl_enable_compress", "0", CVAR_ARCHIVE, "request huffman compression from server" );
 	Cvar_Get( "cl_enable_split", "1", CVAR_ARCHIVE, "request packet split from server" );
