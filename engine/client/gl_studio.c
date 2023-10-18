@@ -3781,6 +3781,20 @@ void R_DrawViewModel( void )
 	RI.currententity->curstate.sequence = cl.weaponseq;
 	pStudioDraw->StudioDrawModel( STUDIO_RENDER );
 
+
+	if ( cl_glow_viewmodel->value != 0 )
+	{
+
+
+		RI.currententity->curstate.rendermode    = kRenderTransAlpha;
+		RI.currententity->curstate.renderamt     = cl_glow_viewmodel_renderamt->value;
+		RI.currententity->curstate.renderfx      = kRenderFxGlowShell;
+		RI.currententity->curstate.rendercolor.r = cl_glow_viewmodel_red->value;
+		RI.currententity->curstate.rendercolor.g = cl_glow_viewmodel_green->value;
+		RI.currententity->curstate.rendercolor.b = cl_glow_viewmodel_blue->value;
+
+	}
+	
 	// restore depth range
 	pglDepthRange( gldepthmin, gldepthmax );
 
