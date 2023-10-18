@@ -70,12 +70,6 @@ convar_t	*cl_maxpacket;
 convar_t	*cl_maxpayload;
 convar_t	*cl_seebehindwall;
 convar_t        *r_bmodelinterp;
-convar_t        *cl_glow_player;
-convar_t        *cl_glow_player_rendermode;
-convar_t        *cl_glow_player_renderamt;
-convar_t        *cl_glow_player_red;
-convar_t        *cl_glow_player_blue;
-convar_t        *cl_glow_player_green;
 
 convar_t	*hud_utf8;
 
