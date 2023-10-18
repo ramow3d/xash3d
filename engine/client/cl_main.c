@@ -69,7 +69,13 @@ convar_t	*hud_scale;
 convar_t	*cl_maxpacket;
 convar_t	*cl_maxpayload;
 convar_t	*cl_seebehindwall;
-convar_t    *r_bmodelinterp;
+convar_t        *r_bmodelinterp;
+convar_t        *cl_glow_player;
+convar_t        *cl_glow_player_rendermode;
+convar_t        *cl_glow_player_renderamt;
+convar_t        *cl_glow_player_red;
+convar_t        *cl_glow_player_blue;
+convar_t        *cl_glow_player_green;
 
 convar_t	*hud_utf8;
 
@@ -2218,6 +2224,13 @@ void CL_InitLocal( void )
 	cl_trace_events = Cvar_Get( "cl_trace_events", "0", CVAR_ARCHIVE|CVAR_CHEAT, "enable client event tracing (good for developers)" );
 	cl_trace_messages = Cvar_Get( "cl_trace_messages", "0", CVAR_ARCHIVE|CVAR_CHEAT, "enable message names tracing (good for developers)");
 	cl_trace_stufftext = Cvar_Get( "cl_trace_stufftext", "0", CVAR_ARCHIVE|CVAR_CHEAT, "enable stufftext commands tracing (good for developers)" );
+        cl_glow_player           = Cvar_Get( "cl_glow_player", "0", CVAR_ARCHIVE, "Enable Glow Players" );
+        cl_glow_player_red       = Cvar_Get( "cl_glow_player_red", "200", CVAR_ARCHIVE, "Player Glowcolor Red" );
+        cl_glow_player_blue      = Cvar_Get( "cl_glow_player_blue", "100", CVAR_ARCHIVE, "Player Glowcolor Blue" );
+        cl_glow_player_green     = Cvar_Get( "cl_glow_player_green", "50", CVAR_ARCHIVE, "Player Glowcolor Green" );
+        cl_glow_player_rendermode = Cvar_Get( "cl_glow_player_rendermode", "1", CVAR_ARCHIVE, "Glow Player Rendermode" );
+        cl_glow_player_renderamt  = Cvar_Get( "cl_glow_player_renderamt", "255", CVAR_ARCHIVE, "Glow Player Renderamt" );
+
 
 	// userinfo
 	Cvar_Get( "password", "", CVAR_USERINFO, "player password" );
