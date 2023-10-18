@@ -462,7 +462,7 @@ qboolean Host_IsLocalGame( void )
 {
 	if( Host_IsDedicated() )
 		return false;
-	if( CL_Active() && SV_Active() && CL_GetMaxClients() == 32 )
+	if( CL_Active() && SV_Active() && CL_GetMaxClients() == 1 )
 		return true;
 	return false;
 }
