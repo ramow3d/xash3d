@@ -604,6 +604,11 @@ extern convar_t *cl_glow_player_renderamt;
 extern convar_t *cl_glow_player_red;
 extern convar_t *cl_glow_player_blue;
 extern convar_t *cl_glow_player_green;
+extern convar_t *cl_glow_viewmodel;
+extern convar_t *cl_glow_viewmodel_red;
+extern convar_t *cl_glow_viewmodel_blue;
+extern convar_t *cl_glow_viewmodel_green;
+extern convar_t *cl_glow_viewmodel_renderamt;
 
 
 
