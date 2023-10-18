@@ -598,6 +598,13 @@ extern convar_t *m_ignore;
 extern convar_t *hud_utf8;
 extern convar_t *vgui_utf8;
 extern convar_t *ui_renderworld;
+extern convar_t *cl_glow_player;
+extern convar_t *cl_glow_player_rendermode;
+extern convar_t *cl_glow_player_renderamt;
+extern convar_t *cl_glow_player_red;
+extern convar_t *cl_glow_player_blue;
+extern convar_t *cl_glow_player_green;
+
 
 
 //=============================================================================
