@@ -65,13 +65,13 @@ int main( int argc, char** argv )
 	char gamedir_buf[32] = "";
 	const char *gamedir = getenv("XASH3D_GAMEDIR");
 
-	#if (!defined(__HAIKU__) && !defined(_WIN32) && !defined(__SAILFISH__))
+	/*#if (!defined(__HAIKU__) && !defined(_WIN32) && !defined(__SAILFISH__))
 	if( !getuid() )
 	{
 		printf( "You shouldn't run Xash3D as root!\n" );
 		return 1;
 	}
-	#endif
+	#endif*/
 
 	if(!gamedir)
 		gamedir = "valve";
