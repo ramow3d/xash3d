@@ -1,12 +1,7 @@
 # Build engine
 
 mkdir -p build && cd build/
-export CC="ccache gcc"
-export CXX="ccache g++"
-export CFLAGS="-m32"
-export CXXFLAGS="-m32"
 cmake \
-	-DCMAKE_PREFIX_PATH=$TRAVIS_BUILD_DIR/sdl2-linux/usr/local \
 	-DXASH_DOWNLOAD_DEPENDENCIES=yes \
 	-DXASH_STATIC=ON \
 	-DXASH_DLL_LOADER=ON \
