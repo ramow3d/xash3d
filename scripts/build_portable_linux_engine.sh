@@ -1,6 +1,8 @@
 # Build engine
 
 mkdir -p build && cd build/
+export CFLAGS="-m32"
+export CXXFLAGS="-m32"
 cmake \
 	-DXASH_DOWNLOAD_DEPENDENCIES=yes \
 	-DXASH_STATIC=ON \
