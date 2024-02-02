@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  android:
+  linux:
    name: Setup
    runs-on: ubuntu-latest
    steps:
