@@ -21,7 +21,7 @@ jobs:
    - run: | 
            sudo dpkg --add-architecture i386
            sudo apt-get update
-           sudo apt install build-essential cmake make gcc g++ gcc-multilib g++-multilib libfontconfig1-dev libfreetype6-dev libsdl2-dev
+           sudo apt install build-essential cmake make gcc g++ gcc-multilib g++-multilib libfontconfig1-dev libfreetype6-dev libstdc++6 libsdl2-dev
            git clone --recursive https://github.com/ValveSoftware/halflife hlsdk/
            mkdir build && cd build
            cmake .. -DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32 -DCMAKE_EXE_LINKER_FLAGS=-m32 -DHL_SDK_DIR=../hlsdk
