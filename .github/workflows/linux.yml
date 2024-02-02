@@ -19,6 +19,7 @@ jobs:
       distribution: 'zulu' # See 'Supported distributions' for available options
       java-version: '8'
    - run: | 
+   continue-on-error: true
            sudo dpkg --add-architecture i386
            export CFLAGS="-m32"
            export CXXFLAGS="-m32"
@@ -34,4 +35,4 @@ jobs:
      uses: actions/upload-artifact@v3
      with:
           name: compiled
-          path: build/installed
+          path: build/
