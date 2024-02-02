@@ -8,17 +8,16 @@ jobs:
    name: Setup
    runs-on: ubuntu-latest
    steps:
-   - name: Checkout sources
-     uses: actions/checkout@v3
-     with:
+    - name: Checkout sources
+      uses: actions/checkout@v3
+      with:
           fetch-depth: 0
           submodules: recursive
-   - uses: actions/checkout@v3
-   - uses: actions/setup-java@v3
-     with:
-      distribution: 'zulu' # See 'Supported distributions' for available options
-      java-version: '8'
-   - run: | 
+    - uses: actions/setup-java@v3
+       with:
+        distribution: 'zulu' # See 'Supported distributions' for available options
+        java-version: '8'
+     - run: | 
            sudo dpkg --add-architecture i386
            export CFLAGS="-m32"
            export CXXFLAGS="-m32"
@@ -31,8 +30,8 @@ jobs:
            mkdir installed
            make install installed/
      continue-on-error: true
-   - name: Upload artifacts
-     uses: actions/upload-artifact@v3
-     with:
-          name: compiled
-          path: build/
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: compiled
+        path: build/
