@@ -29,7 +29,8 @@ jobs:
            cmake .. -DXASH_SDL=yes -DXASH_VGUI=yes -DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32 -DCMAKE_EXE_LINKER_FLAGS=-m32 -DHL_SDK_DIR=../hlsdk
            make -j8
            mkdir installed
-           find ./ -type f -name "*.so" -exec mv {} ./installed \;
+           mv engine/libxash.so installed/
+           mv mainui/libxashmenu.so installed/
            mv game_launch/xash3d installed/
      continue-on-error: true
    - name: Upload artifacts
