@@ -323,12 +323,8 @@ void SV_CheckCmdTimes( void )
 
 	if( sv_fps.value != 0.0f )
 	{
-		if( sv_fps.value < MIN_FPS )
-			Cvar_SetValue( "sv_fps", MIN_FPS );
-
-		if( sv_fps.value > MAX_FPS )
-			Cvar_SetValue( "sv_fps", MAX_FPS );
 	}
+		
 
 	if(( host.realtime - lastreset ) < 1.0 )
 		return;
