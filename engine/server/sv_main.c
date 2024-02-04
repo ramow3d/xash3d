@@ -662,9 +662,9 @@ void SV_RunGameFrame( void )
 {
 	if( !SV_IsSimulating( )) return;
 
-	if( sv_fps.value != 0.0f )
+	if( sv_fps->value != 0.0f )
 	{
-		double		fps = (1.0 / (double)( sv_fps.value - 0.01f )); // FP issues
+		double		fps = (1.0 / (double)( sv_fps->value - 0.01f )); // FP issues
 		int		numFrames = 0;
 
 		while( sv.time_residual >= fps )
@@ -703,10 +703,10 @@ void Host_ServerFrame( void )
 		return;
 	}
 
-	if( sv_fps.value != 0.0f && ( !SV_IsSimulating() || sv.state != ss_active ))
+	if( sv_fps->value != 0.0f && ( !SV_IsSimulating() || sv.state != ss_active ))
 		sv.time_residual += host.frametime;
 
-	if( sv_fps.value == 0.0f )
+	if( sv_fps->value == 0.0f )
 		sv.frametime = host.frametime;
 	svgame.globals->frametime = sv.frametime;
 	
