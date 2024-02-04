@@ -129,7 +129,6 @@ convar_t	*sv_allow_mouse;
 convar_t	*sv_allow_joystick;
 convar_t	*sv_allow_vr;
 convar_t	*sv_allow_hltv;
-convar_t        *sv_fps;
 
 static void Master_Heartbeat( void );
 
@@ -320,7 +319,6 @@ void SV_CheckCmdTimes( void )
 	static double	lastreset = 0;
 	double		timewindow;
 	int		i;
-		
 
 	if(( host.realtime - lastreset ) < 1.0 )
 		return;
@@ -462,7 +460,7 @@ void SV_ReadPackets( void )
 				{
 					cl->lastmessage = host.realtime; // don't timeout
 					SV_ExecuteClientMessage( cl, &net_message );
-					svgame.globals->frametime = sv.frametime;
+					svgame.globals->frametime = host.frametime;
 					svgame.globals->time = sv.time;
 				}
 			}
@@ -662,30 +660,9 @@ void SV_RunGameFrame( void )
 {
 	if( !SV_IsSimulating( )) return;
 
-	if( sv_fps->value != 0.0f )
-	{
-		double		fps = (1.0 / (double)( sv_fps->value - 0.01f )); // FP issues
-		int		numFrames = 0;
+	SV_Physics();
 
-		while( sv.time_residual >= fps )
-		{
-			sv.frametime = fps;
-
-			SV_Physics();
-
-			sv.time_residual -= fps;
-			sv.time += fps;
-			numFrames++;
-		}
-
-		return (numFrames != 0);
-	}
-	else
-	{
-		SV_Physics();
-		sv.time += sv.frametime;
-		return true;
-	}
+	sv.time += host.frametime;
 }
 
 /*
@@ -703,13 +680,8 @@ void Host_ServerFrame( void )
 		return;
 	}
 
-	if( sv_fps->value != 0.0f && ( !SV_IsSimulating() || sv.state != ss_active ))
-		sv.time_residual += host.frametime;
+	svgame.globals->frametime = host.frametime;
 
-	if( sv_fps->value == 0.0f )
-		sv.frametime = host.frametime;
-	svgame.globals->frametime = sv.frametime;
-	
 	// check timeouts
 	SV_CheckTimeouts ();
 
@@ -919,7 +891,6 @@ void SV_Init( void )
 	Cvar_Get( "mp_allowmonsters", "0", CVAR_SERVERNOTIFY | CVAR_LATCH, "allow monsters in multiplayer" );
 	Cvar_Get( "port", va( "%i", PORT_SERVER ), 0, "network default port" );
 	Cvar_Get( "ip_hostport", "0", 0, "network server port" );
-	Cvar_Get( "sv_fps", "30", 0, "server fps" );
 
 	// half-life shared variables
 	sv_zmax = Cvar_Get ("sv_zmax", "4096", CVAR_PHYSICINFO, "zfar server value" );

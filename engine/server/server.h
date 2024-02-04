@@ -127,8 +127,6 @@ typedef struct server_s
 					// until client connected
 
 	double		time;		// sv.time += host.frametime
-        double		time_residual;
-        float		frametime;      // sv_fps
 	int		net_framenum;	// to avoid send edicts twice through portals
 
 	int		hostflags;	// misc server flags: predicting etc
