@@ -129,6 +129,7 @@ convar_t	*sv_allow_mouse;
 convar_t	*sv_allow_joystick;
 convar_t	*sv_allow_vr;
 convar_t	*sv_allow_hltv;
+convar_t        *sv_fps;
 
 static void Master_Heartbeat( void );
 
@@ -319,6 +320,15 @@ void SV_CheckCmdTimes( void )
 	static double	lastreset = 0;
 	double		timewindow;
 	int		i;
+
+	if( sv_fps.value != 0.0f )
+	{
+		if( sv_fps.value < MIN_FPS )
+			Cvar_SetValue( "sv_fps", MIN_FPS );
+
+		if( sv_fps.value > MAX_FPS )
+			Cvar_SetValue( "sv_fps", MAX_FPS );
+	}
 
 	if(( host.realtime - lastreset ) < 1.0 )
 		return;
@@ -660,9 +670,30 @@ void SV_RunGameFrame( void )
 {
 	if( !SV_IsSimulating( )) return;
 
-	SV_Physics();
+	if( sv_fps.value != 0.0f )
+	{
+		double		fps = (1.0 / (double)( sv_fps.value - 0.01f )); // FP issues
+		int		numFrames = 0;
 
-	sv.time += host.frametime;
+		while( sv.time_residual >= fps )
+		{
+			host.frametime = fps;
+
+			SV_Physics();
+
+			sv.time_residual -= fps;
+			sv.time += fps;
+			numFrames++;
+		}
+
+		return (numFrames != 0);
+	}
+	else
+	{
+		SV_Physics();
+		sv.time += host.frametime;
+		return true;
+	}
 }
 
 /*
@@ -679,6 +710,9 @@ void Host_ServerFrame( void )
 		SV_ReadPackets (); // allow rcon
 		return;
 	}
+
+	if( sv_fps.value != 0.0f && ( !SV_IsSimulating()))
+		sv.time_residual += host.frametime;
 
 	svgame.globals->frametime = host.frametime;
 
@@ -891,6 +925,7 @@ void SV_Init( void )
 	Cvar_Get( "mp_allowmonsters", "0", CVAR_SERVERNOTIFY | CVAR_LATCH, "allow monsters in multiplayer" );
 	Cvar_Get( "port", va( "%i", PORT_SERVER ), 0, "network default port" );
 	Cvar_Get( "ip_hostport", "0", 0, "network server port" );
+	Cvar_Get( "sv_fps", "0", 0, "server fps" );
 
 	// half-life shared variables
 	sv_zmax = Cvar_Get ("sv_zmax", "4096", CVAR_PHYSICINFO, "zfar server value" );
