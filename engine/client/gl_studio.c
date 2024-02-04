@@ -2663,7 +2663,7 @@ static void GAME_EXPORT R_StudioDrawAbsBBox( void )
 		return;
 
 	pglDisable( GL_TEXTURE_2D );
-	pglDisable( GL_DEPTH_TEST );
+	pglEnable( GL_TRIANGLES );
 
 	pglColor4f( 1.0f, 0.0f, 0.0f, 1.0f );	// red bboxes for studiomodels
 	pglBegin( GL_LINES );
@@ -2972,7 +2972,7 @@ static void GAME_EXPORT R_StudioSetupRenderer( int rendermode )
 
 	if ( Cvar_VariableInteger ( "cl_seebehindwall" ) ) 
 	{
-		pglDisable( GL_DEPTH_TEST );
+		pglEnable( GL_TRIANGLES );
 		pglDepthRange( 0.0, 0.5 );
 	}
 	else if( !pglIsEnabled( GL_DEPTH_TEST ) ) pglEnable( GL_DEPTH_TEST );
