@@ -105,8 +105,6 @@ convar_t	*sv_userinfo_penalty_attempts;
 convar_t	*sv_fullupdate_enable_penalty;
 convar_t	*sv_fullupdate_penalty_multiplier;
 convar_t	*sv_fullupdate_penalty_time;
-convar_t	*sv_speedhack_kick;
-convar_t	*sv_speedhack_warns;
 convar_t	*sv_master_verbose_heartbeats;
 convar_t	*sv_master_response_timeout;
 
@@ -930,9 +928,6 @@ void SV_Init( void )
 	sv_fullupdate_enable_penalty = Cvar_Get( "sv_fullupdate_enable_penalty", "1", CVAR_ARCHIVE, "enable penalty time for too fast fullupdate command execution" );
 	sv_fullupdate_penalty_multiplier = Cvar_Get( "sv_fullupdate_penalty_multiplier", "2", CVAR_ARCHIVE, "penalty time multiplier" );
 	sv_fullupdate_penalty_time = Cvar_Get( "sv_fullupdate_penalty_time", "1", CVAR_ARCHIVE, "inital penalty time" );
-
-	sv_speedhack_kick = Cvar_Get( "sv_speedhack_kick", "1", CVAR_ARCHIVE, "enable automatic kicking of players who speedhack" );
-	sv_speedhack_warns = Cvar_Get( "sv_speedhack_warns", "8", CVAR_ARCHIVE, "maximum number of warnings before kicking for speedhack" );
 
 	sv_master_verbose_heartbeats = Cvar_Get( "sv_master_verbose_heartbeats", "0", 0, "print every heartbeat to console" );
 	sv_master_response_timeout = Cvar_Get( "sv_master_response_timeout", "4", CVAR_ARCHIVE, "master server heartbeat response timeout in seconds" );

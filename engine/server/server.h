@@ -276,8 +276,6 @@ typedef struct sv_client_s
 	float	userinfo_next_changetime;
 	float	userinfo_penalty;
 	int		userinfo_change_attempts;
-	int		speedhack_warns;	// how many times client time was faster than server during this session
-	qboolean speedhack_warned;	// did we warn our server operator in the log for this batch of commands?
 } sv_client_t;
 
 
@@ -494,8 +492,6 @@ extern	convar_t		*sv_userinfo_penalty_attempts;
 extern	convar_t		*sv_fullupdate_enable_penalty;
 extern	convar_t		*sv_fullupdate_penalty_multiplier;
 extern	convar_t		*sv_fullupdate_penalty_time;
-extern	convar_t		*sv_speedhack_kick;
-extern	convar_t		*sv_speedhack_warns;
 extern	convar_t		*sv_master_verbose_heartbeats;
 
 //===========================================================
