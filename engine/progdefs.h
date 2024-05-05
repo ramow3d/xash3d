@@ -67,7 +67,7 @@ typedef struct entvars_s
 
 	vec3_t		angles;		// Model angles
 	vec3_t		avelocity;	// angle velocity (degrees per second)
-	vec3_t		punchangle;	// auto-decaying view angle adjustment
+	//vec3_t		punchangle;	// auto-decaying view angle adjustment
 	vec3_t		v_angle;		// Viewing angle (player only)
 
 	// For parametric entities
