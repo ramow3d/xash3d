@@ -111,11 +111,10 @@ void V_SetupRefDef( void )
 
         if(p_g_ShellQueue->count > 0)
         {
-            vec3_t new_angles = {
-                cl.refdef.viewangles[0] + old_punchangle[0] - punch[0],
-                cl.refdef.viewangles[1] + old_punchangle[1] - punch[1],
-                cl.refdef.viewangles[2] + old_punchangle[2] - punch[2]
-            };
+            vec3_t new_angles;
+            for (int i = 0; i < 3; ++i) {
+                new_angles[i] = cl.refdef.viewangles[i] + old_punchangle[i] - punch[i];
+            }
 
             if(new_angles[0] < -89)     new_angles[0] = -89;
             if(new_angles[0] > 89)      new_angles[0] = 89;
@@ -123,10 +122,14 @@ void V_SetupRefDef( void )
             while(new_angles[1] < -180) new_angles[1] += 360;
             while(new_angles[1] > 180)  new_angles[1] -= 360;
 
-            cl.refdef.viewangles = new_angles;
+            cl.refdef.viewangles[0] = new_angles[0];
+            cl.refdef.viewangles[1] = new_angles[1];
+            cl.refdef.viewangles[2] = new_angles[2];
         }
-
-        old_punchangle = punch;
+	    
+        old_punchangle[0] = punch[0];
+        old_punchangle[1] = punch[1];
+        old_punchangle[2] = punch[2];
     }
     else
     {
