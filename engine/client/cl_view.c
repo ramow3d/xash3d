@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "touch.h" // IN_TouchDraw( )
 #include "joyinput.h" // Joy_DrawOnScreenKeyboard( )
 
+Queue* p_g_ShellQueue;
 
 /*
 ===============
