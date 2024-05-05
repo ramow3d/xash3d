@@ -539,9 +539,6 @@ typedef struct _Queue
     int count;
     int maxelements;
     float m_flDuration;
-    Element *first;
-    Element *last;
-    Element *current;
 }Queue;
 extern Queue* p_g_ShellQueue;
 
