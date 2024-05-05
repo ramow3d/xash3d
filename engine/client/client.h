@@ -534,22 +534,6 @@ typedef struct
 	qboolean internetservers_pending;	// internetservers is waiting for dns request
 } client_static_t;
 
-typedef struct _Node {
-    edict_t *data;
-    struct _Node *next;
-} Node;
-
-typedef struct _Queue {
-    int count;
-    int maxelements;
-    float m_flDuration;
-    Node *first;
-    Node *last;
-    Node *current;
-} Queue;
-
-extern Queue* p_g_ShellQueue;
-
 	// download info
 extern int		downloadcount;
 extern int		downloadfileid;
