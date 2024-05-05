@@ -25,8 +25,6 @@ GNU General Public License for more details.
 #include "touch.h" // IN_TouchDraw( )
 #include "joyinput.h" // Joy_DrawOnScreenKeyboard( )
 
-Queue* p_g_ShellQueue;
-
 /*
 ===============
 V_SetupRefDef
@@ -39,8 +37,6 @@ void V_SetupRefDef( void )
     cl_entity_t *clent;
     int size;
     int sb_lines;
-    vec3_t punch;
-    vec3_t old_punchangle;
 
     clent = CL_GetLocalPlayer ();
 
@@ -104,70 +100,17 @@ void V_SetupRefDef( void )
         VectorCopy( cl.predicted.origin, cl.refdef.simorg );
         VectorCopy( cl.predicted.velocity, cl.refdef.simvel );
         VectorCopy( cl.predicted.viewofs, cl.refdef.viewheight );
-        VectorCopy( cl.predicted.punchangle, punch );
-
-        const float rcs_val = 2;
-        punch[0] *= rcs_val;
-        punch[1] *= rcs_val;
-
-        if(p_g_ShellQueue->count > 0)
-        {
-            vec3_t new_angles;
-            for (int i = 0; i < 3; ++i) {
-                new_angles[i] = cl.refdef.viewangles[i] + old_punchangle[i] - punch[i];
-            }
-
-            if(new_angles[0] < -89)     new_angles[0] = -89;
-            if(new_angles[0] > 89)      new_angles[0] = 89;
-
-            while(new_angles[1] < -180) new_angles[1] += 360;
-            while(new_angles[1] > 180)  new_angles[1] -= 360;
-
-            cl.refdef.viewangles[0] = new_angles[0];
-            cl.refdef.viewangles[1] = new_angles[1];
-            cl.refdef.viewangles[2] = new_angles[2];
-        }
-	    
-        old_punchangle[0] = punch[0];
-        old_punchangle[1] = punch[1];
-        old_punchangle[2] = punch[2];
     }
     else
     {
         VectorCopy( cl.frame.client.origin, cl.refdef.simorg );
         VectorCopy( cl.frame.client.view_ofs, cl.refdef.viewheight );
         VectorCopy( cl.frame.client.velocity, cl.refdef.simvel );
-        VectorCopy( cl.frame.client.punchangle, cl.refdef.punchangle );
         cl.refdef.onground   = cl.frame.client.flags & FL_ONGROUND ? 1 : 0;
         cl.refdef.waterlevel = cl.frame.client.waterlevel;
     }
 }
 
-/*
-===============
-V_SetupOverviewState
-
-Get initial overview values
-===============
-*/
-void V_SetupOverviewState( void )
-{
-	ref_overview_t	*ov = &clgame.overView;
-	float		mapAspect, screenAspect, aspect;
-
-	ov->rotated = ( world.size[1] <= world.size[0] ) ? true : false;
-
-	// calculate nearest aspect
-	mapAspect = world.size[!ov->rotated] / world.size[ov->rotated];
-	screenAspect = (float)glState.width / (float)glState.height;
-	aspect = max( mapAspect, screenAspect );
-
-	ov->zNear = world.maxs[2];
-	ov->zFar = world.mins[2];
-	ov->flZoom = ( 8192.0f / world.size[ov->rotated] ) / aspect;
-
-	VectorAverage( world.mins, world.maxs, ov->origin );
-}
 
 /*
 ===============
