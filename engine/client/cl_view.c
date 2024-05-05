@@ -105,6 +105,30 @@ void V_SetupRefDef( void )
 		VectorCopy( cl.predicted.punchangle, cl.refdef.punchangle );
 		cl.refdef.onground   = cl.predicted.onground != -1;
 		cl.refdef.waterlevel = cl.predicted.waterlevel;
+
+        const float rcs_val = 2;
+        vec3_t punch = cl.refdef.punchangle;
+        punch[0] *= rcs_val;
+        punch[1] *= rcs_val;
+
+        if(p_g_ShellQueue->count > 0)
+        {
+            vec3_t new_angles = {
+                cl.refdef.viewangles[0] + old_punchangle[0] - punch[0],
+                cl.refdef.viewangles[1] + old_punchangle[1] - punch[1],
+                cl.refdef.viewangles[2] + old_punchangle[2] - punch[2]
+            };
+
+            if(new_angles[0] < -89)     new_angles[0] = -89;
+            if(new_angles[0] > 89)      new_angles[0] = 89;
+
+            while(new_angles[1] < -180) new_angles[1] += 360;
+            while(new_angles[1] > 180)  new_angles[1] -= 360;
+
+            cl.refdef.viewangles = new_angles;
+        }
+
+        old_punchangle = punch;
 	}
 	else
 	{
