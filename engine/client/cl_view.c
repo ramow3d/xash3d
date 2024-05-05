@@ -111,6 +111,30 @@ void V_SetupRefDef( void )
     }
 }
 
+/*
+===============
+V_SetupOverviewState
+Get initial overview values
+===============
+*/
+void V_SetupOverviewState( void )
+{
+	ref_overview_t	*ov = &clgame.overView;
+	float		mapAspect, screenAspect, aspect;
+
+	ov->rotated = ( world.size[1] <= world.size[0] ) ? true : false;
+
+	// calculate nearest aspect
+	mapAspect = world.size[!ov->rotated] / world.size[ov->rotated];
+	screenAspect = (float)glState.width / (float)glState.height;
+	aspect = max( mapAspect, screenAspect );
+
+	ov->zNear = world.maxs[2];
+	ov->zFar = world.mins[2];
+	ov->flZoom = ( 8192.0f / world.size[ov->rotated] ) / aspect;
+
+	VectorAverage( world.mins, world.maxs, ov->origin );
+}
 
 /*
 ===============
