@@ -676,7 +676,7 @@ static void SV_SetupPMove( playermove_t *pmove, sv_client_t *cl, usercmd_t *ucmd
 	pmove->flTimeStepSound = clent->v.flTimeStepSound;
 	pmove->iStepLeft = clent->v.iStepLeft;
 	pmove->flFallVelocity = clent->v.flFallVelocity;
-	//VectorCopy( clent->v.punchangle, pmove->punchangle );
+	VectorCopy( clent->v.punchangle, pmove->punchangle );
 	pmove->flSwimTime = clent->v.flSwimTime;
 	pmove->flNextPrimaryAttack = 0.0f; // not used by PM_ code
 	pmove->effects = clent->v.effects;
@@ -740,7 +740,7 @@ static void SV_FinishPMove( playermove_t *pmove, sv_client_t *cl )
 	VectorCopy( pmove->view_ofs, clent->v.view_ofs );
 	VectorCopy( pmove->velocity, clent->v.velocity );
 	VectorCopy( pmove->basevelocity, clent->v.basevelocity );
-	//VectorCopy( pmove->punchangle, clent->v.punchangle );
+	VectorCopy( pmove->punchangle, clent->v.punchangle );
 	VectorCopy( pmove->movedir, clent->v.movedir );
 	clent->v.flTimeStepSound = pmove->flTimeStepSound;
 	clent->v.flFallVelocity = pmove->flFallVelocity;
