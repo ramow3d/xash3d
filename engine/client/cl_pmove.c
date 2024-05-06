@@ -899,7 +899,7 @@ void CL_SetupPMove( playermove_t *pmove, const local_state_t *from, const usercm
 	pmove->flTimeStepSound = cd->flTimeStepSound;
 	pmove->iStepLeft = ps->iStepLeft;
 	pmove->flFallVelocity = ps->flFallVelocity;
-	//VectorCopy( cd->punchangle, pmove->punchangle );
+	VectorCopy( cd->punchangle, pmove->punchangle );
 	pmove->flSwimTime = cd->flSwimTime;
 	pmove->flNextPrimaryAttack = 0.0f; // not used by PM_ code
 	pmove->effects = ps->effects;
@@ -957,7 +957,7 @@ void CL_FinishPMove( const playermove_t *pmove, local_state_t *to )
 	VectorCopy( pmove->origin, ps->origin );
 	VectorCopy( pmove->angles, ps->angles );
 	VectorCopy( pmove->basevelocity, ps->basevelocity );
-	//VectorCopy( pmove->punchangle, cd->punchangle );
+	VectorCopy( pmove->punchangle, cd->punchangle );
 	ps->oldbuttons = pmove->oldbuttons;
 	ps->friction = pmove->friction;
 	ps->movetype = pmove->movetype;
@@ -1204,7 +1204,7 @@ void CL_PredictMovement( void )
 		// keep cl.predicted.origin valid
 		VectorCopy( cl.frame.client.origin, cl.predicted.origin );
 		VectorCopy( cl.frame.client.velocity, cl.predicted.velocity );
-		//VectorCopy( cl.frame.client.punchangle, cl.predicted.punchangle );
+		VectorCopy( cl.frame.client.punchangle, cl.predicted.punchangle );
 		VectorCopy( cl.frame.client.view_ofs, cl.predicted.viewofs );
 		cl.predicted.viewmodel = cl.frame.client.viewmodel;
 		cl.predicted.usehull = from->playerstate.usehull;
@@ -1230,7 +1230,7 @@ void CL_PredictMovement( void )
 		// fake unpredicted values
 		VectorCopy( to.client.origin, cl.predicted.origin );
 		VectorCopy( to.client.velocity, cl.predicted.velocity );
-		//VectorCopy( to.client.punchangle, cl.predicted.punchangle );
+		VectorCopy( to.client.punchangle, cl.predicted.punchangle );
 		VectorCopy( to.client.view_ofs, cl.predicted.viewofs );
 		cl.predicted.usehull = to.playerstate.usehull;
 		cl.predicted.waterlevel = to.client.waterlevel;
@@ -1302,7 +1302,7 @@ void CL_PredictMovement( void )
 		{
 			VectorCopy( to->playerstate.origin, cl.predicted.origin );
 			VectorCopy( to->client.velocity,    cl.predicted.velocity );
-			//VectorCopy( to->client.punchangle,  cl.predicted.punchangle );
+			VectorCopy( to->client.punchangle,  cl.predicted.punchangle );
 			VectorCopy( to->client.view_ofs, cl.predicted.viewofs );
 		}
 		else
@@ -1310,11 +1310,11 @@ void CL_PredictMovement( void )
 			vec3_t delta_origin, delta_punch, delta_vel;
 			VectorSubtract( to->playerstate.origin, from->playerstate.origin, delta_origin );
 			VectorSubtract( to->client.velocity,    from->client.velocity,    delta_vel );
-			//VectorSubtract( to->client.punchangle,  from->client.punchangle,  delta_punch );
+			VectorSubtract( to->client.punchangle,  from->client.punchangle,  delta_punch );
 
 			VectorMA( from->playerstate.origin, t, delta_origin, cl.predicted.origin );
 			VectorMA( from->client.velocity,    t, delta_vel,    cl.predicted.velocity );
-			//VectorMA( from->client.punchangle,  t, delta_punch,  cl.predicted.punchangle );
+			VectorMA( from->client.punchangle,  t, delta_punch,  cl.predicted.punchangle );
 
 			if( from->playerstate.usehull == to->playerstate.usehull )
 			{

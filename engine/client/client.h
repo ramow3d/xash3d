@@ -534,6 +534,7 @@ typedef struct
 	qboolean internetservers_pending;	// internetservers is waiting for dns request
 } client_static_t;
 
+
 	// download info
 extern int		downloadcount;
 extern int		downloadfileid;

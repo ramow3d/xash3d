@@ -25,6 +25,7 @@ GNU General Public License for more details.
 #include "touch.h" // IN_TouchDraw( )
 #include "joyinput.h" // Joy_DrawOnScreenKeyboard( )
 
+
 /*
 ===============
 V_SetupRefDef
@@ -32,90 +33,94 @@ V_SetupRefDef
 update refdef values each frame
 ===============
 */
-void V_SetupRefDef(void) {
-    cl_entity_t *clent;
-    int size;
-    int sb_lines;
+void V_SetupRefDef( void )
+{
+	cl_entity_t	*clent;
+	int		size;
+	int		sb_lines;
 
-    clent = CL_GetLocalPlayer();
+	clent = CL_GetLocalPlayer ();
 
-    clgame.entities->curstate.scale = clgame.movevars.waveHeight;
-    clgame.viewent.curstate.modelindex = cl.predicted.viewmodel;
-    clgame.viewent.model = Mod_Handle(clgame.viewent.curstate.modelindex);
-    clgame.viewent.curstate.number = cl.playernum + 1;
-    clgame.viewent.curstate.entityType = ET_NORMAL;
-    clgame.viewent.index = cl.playernum + 1;
+	clgame.entities->curstate.scale = clgame.movevars.waveHeight;
+	clgame.viewent.curstate.modelindex = cl.predicted.viewmodel;
+	clgame.viewent.model = Mod_Handle( clgame.viewent.curstate.modelindex );
+	clgame.viewent.curstate.number = cl.playernum + 1;
+	clgame.viewent.curstate.entityType = ET_NORMAL;
+	clgame.viewent.index = cl.playernum + 1;
 
-    cl.refdef.movevars = &clgame.movevars;
-    cl.refdef.health = cl.frame.client.health;
-    cl.refdef.playernum = cl.playernum;
-    cl.refdef.max_entities = clgame.maxEntities;
-    cl.refdef.maxclients = cl.maxclients;
-    cl.refdef.time = cl.time;
-    cl.refdef.frametime = host.frametime;
-    //cl.refdef.frametime = cl.time - cl.oldtime;
-    cl.refdef.demoplayback = cls.demoplayback;
-    cl.refdef.smoothing = 0;
-    cl.refdef.viewsize = scr_viewsize->integer;
-    cl.refdef.onlyClientDraw = 0;  // reset clientdraw
-    cl.refdef.hardware = true;     // always true
-    cl.refdef.spectator = (clent->curstate.spectator != 0);
-    cl.refdef.nextView = 0;
+	cl.refdef.movevars = &clgame.movevars;
+	cl.refdef.health = cl.frame.client.health;
+	cl.refdef.playernum = cl.playernum;
+	cl.refdef.max_entities = clgame.maxEntities;
+	cl.refdef.maxclients = cl.maxclients;
+	cl.refdef.time = cl.time;
+	cl.refdef.frametime = host.frametime;
+	//cl.refdef.frametime = cl.time - cl.oldtime;
+	cl.refdef.demoplayback = cls.demoplayback;
+	cl.refdef.smoothing = 0;
+	cl.refdef.viewsize = scr_viewsize->integer;
+	cl.refdef.onlyClientDraw = 0;	// reset clientdraw
+	cl.refdef.hardware = true;	// always true
+	cl.refdef.spectator = (clent->curstate.spectator != 0);
+	cl.refdef.nextView = 0;
 
-    SCR_AddDirtyPoint(0, 0);
-    SCR_AddDirtyPoint(scr_width->integer - 1, scr_height->integer - 1);
+	SCR_AddDirtyPoint( 0, 0 );
+	SCR_AddDirtyPoint( scr_width->integer - 1, scr_height->integer - 1 );
 
-    if (cl.refdef.viewsize >= 120)
-        sb_lines = 0;        // no status bar at all
-    else if (cl.refdef.viewsize >= 110)
-        sb_lines = 24;       // no inventory
-    else
-        sb_lines = 48;
+	if( cl.refdef.viewsize >= 120 )
+		sb_lines = 0;		// no status bar at all
+	else if( cl.refdef.viewsize >= 110 )
+		sb_lines = 24;		// no inventory
+	else sb_lines = 48;
 
-    size = min(scr_viewsize->integer, 100);
+	size = min( scr_viewsize->integer, 100 );
 
-    cl.refdef.viewport[2] = scr_width->integer * size / 100;
-    cl.refdef.viewport[3] = scr_height->integer * size / 100;
+	cl.refdef.viewport[2] = scr_width->integer * size / 100;
+	cl.refdef.viewport[3] = scr_height->integer * size / 100;
 
-    if (cl.refdef.viewport[3] > scr_height->integer - sb_lines)
-        cl.refdef.viewport[3] = scr_height->integer - sb_lines;
-    if (cl.refdef.viewport[3] > scr_height->integer)
-        cl.refdef.viewport[3] = scr_height->integer;
+	if( cl.refdef.viewport[3] > scr_height->integer - sb_lines )
+		cl.refdef.viewport[3] = scr_height->integer - sb_lines;
+	if( cl.refdef.viewport[3] > scr_height->integer )
+		cl.refdef.viewport[3] = scr_height->integer;
 
-    cl.refdef.viewport[0] = (scr_width->integer - cl.refdef.viewport[2]) / 2;
-    cl.refdef.viewport[1] = (scr_height->integer - sb_lines - cl.refdef.viewport[3]) / 2;
+	cl.refdef.viewport[0] = (scr_width->integer - cl.refdef.viewport[2]) / 2;
+	cl.refdef.viewport[1] = (scr_height->integer - sb_lines - cl.refdef.viewport[3]) / 2;
 
-    cl.scr_fov = bound(10.0f, cl.scr_fov, 150.0f);
+	cl.scr_fov = bound( 10.0f, cl.scr_fov, 150.0f );
 
-    // calc FOV
-    cl.refdef.fov_x = cl.scr_fov;  // this is a final fov value
-    cl.refdef.fov_y = V_CalcFov(&cl.refdef.fov_x, cl.refdef.viewport[2], cl.refdef.viewport[3]);
+	// calc FOV
+	cl.refdef.fov_x = cl.scr_fov; // this is a final fov value
+	cl.refdef.fov_y = V_CalcFov( &cl.refdef.fov_x, cl.refdef.viewport[2], cl.refdef.viewport[3] );
 
-    // adjust FOV for widescreen
-    if (glState.wideScreen && r_adjust_fov->integer)
-        V_AdjustFov(&cl.refdef.fov_x, &cl.refdef.fov_y, cl.refdef.viewport[2], cl.refdef.viewport[3], false);
+	// adjust FOV for widescreen
+	if( glState.wideScreen && r_adjust_fov->integer )
+		V_AdjustFov( &cl.refdef.fov_x, &cl.refdef.fov_y, cl.refdef.viewport[2], cl.refdef.viewport[3], false );
 
-    if (CL_IsPredicted() && !cl.refdef.demoplayback) {
-        VectorCopy(cl.predicted.origin, cl.refdef.simorg);
-        VectorCopy(cl.predicted.velocity, cl.refdef.simvel);
-        VectorCopy(cl.predicted.viewofs, cl.refdef.viewheight);
-        VectorClear(cl.refdef.punchangle); // Set punchangle to zero
-
-        cl.refdef.onground = cl.predicted.onground != -1;
-        cl.refdef.waterlevel = cl.predicted.waterlevel;
-    } else {
-        VectorCopy(cl.frame.client.origin, cl.refdef.simorg);
-        VectorCopy(cl.frame.client.view_ofs, cl.refdef.viewheight);
-        VectorCopy(cl.frame.client.velocity, cl.refdef.simvel);
-        VectorCopy(cl.frame.client.punchangle, cl.refdef.punchangle);
-        cl.refdef.onground = cl.frame.client.flags & FL_ONGROUND ? 1 : 0;
-        cl.refdef.waterlevel = cl.frame.client.waterlevel;
-    }
+	if( CL_IsPredicted( ) && !cl.refdef.demoplayback )
+	{
+		//VectorMA( cl.predicted.origin, cl.lerpBack, cl.predicted.error, cl.predicted.origin );
+		VectorCopy( cl.predicted.origin, cl.refdef.simorg );
+		VectorCopy( cl.predicted.velocity, cl.refdef.simvel );
+		VectorCopy( cl.predicted.viewofs, cl.refdef.viewheight );
+		VectorCopy( cl.predicted.punchangle, cl.refdef.punchangle );
+		cl.refdef.onground   = cl.predicted.onground != -1;
+		cl.refdef.waterlevel = cl.predicted.waterlevel;
+	}
+	else
+	{
+		VectorCopy( cl.frame.client.origin, cl.refdef.simorg );
+		VectorCopy( cl.frame.client.view_ofs, cl.refdef.viewheight );
+		VectorCopy( cl.frame.client.velocity, cl.refdef.simvel );
+		VectorCopy( cl.frame.client.punchangle, cl.refdef.punchangle );
+		cl.refdef.onground   = cl.frame.client.flags & FL_ONGROUND ? 1 : 0;
+		cl.refdef.waterlevel = cl.frame.client.waterlevel;
+	}
 }
 
 /*
 ===============
 V_SetupOverviewState
+
 Get initial overview values
 ===============
 */
