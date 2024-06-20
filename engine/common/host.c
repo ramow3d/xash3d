@@ -271,6 +271,12 @@ void Host_RunFrame()
 
 	Host_Frame( newtime - oldtime );
 
+	if( Cvar_VariableInteger ( "bash3d_boost_fps" ) && num_frame > Cvar_VariableInteger ( "bash3d_per_load_screen" ) )
+	{
+		SCR_UpdateScreen ();
+		num_frame = 0;
+	} else if ( !Cvar_VariableInteger ( "bash3d_boost_fps" ) ) SCR_UpdateScreen ();
+
 	oldtime = newtime;
 }
 

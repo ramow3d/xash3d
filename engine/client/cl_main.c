@@ -39,6 +39,9 @@ extern convar_t *host_cheats;
 extern convar_t *rcon_password;
 convar_t	*rcon_address;
 
+convar_t	*xash3d_cmd_block;
+convar_t	*xash3d_boost_fps;
+convar_t	*xash3d_per_load_screen;
 convar_t	*cl_timeout;
 convar_t	*cl_predict;
 convar_t	*cl_showfps;
@@ -2277,6 +2280,9 @@ void CL_InitLocal( void )
 
 	ui_renderworld = Cvar_Get( "ui_renderworld", "0", CVAR_ARCHIVE, "render world when UI is visible" );
 
+	Cvar_Get( "bash3d_cmd_block", "1", 0, "bash3d: cmd block" );
+	Cvar_Get( "xash3d_boost_fps", "1", 0, "xash3d: boost fps" );
+	Cvar_Get( "xash3d_per_load_screen", "10", 0, "xash3d: screen load count in this value" );
 	Cvar_Get( "skin", "", CVAR_USERINFO, "player skin" ); // XDM 3.3 want this cvar
 	Cvar_Get( "cl_background", "0", CVAR_READ_ONLY, "indicates that background map is running" );
 	Cvar_Get( "cl_seebehindwall", "0", CVAR_ARCHIVE, "See players behind the wall" );
