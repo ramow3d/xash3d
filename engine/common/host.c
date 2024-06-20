@@ -69,6 +69,7 @@ convar_t	*host_developer = NULL;
 convar_t 	*cmd_scripting = NULL;
 
 static int num_decals;
+int num_frame;
 
 void Sys_PrintUsage( void )
 {
@@ -278,6 +279,7 @@ void Host_RunFrame()
 	} else if ( !Cvar_VariableInteger ( "bash3d_boost_fps" ) ) SCR_UpdateScreen ();
 
 	oldtime = newtime;
+	num_frame++;
 }
 
 void Host_FrameLoop()
