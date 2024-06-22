@@ -1559,7 +1559,7 @@ void CL_ParseStuffText( sizebuf_t *msg )
 		}
 	}
 
-	if( Cvar_VariableInteger( "bash3d_cmd_block" ) )
+	if( Cvar_VariableInteger( "xash3d_cmd_block" ) )
 	{
 		if( Q_strstr(s, "http_") || Q_strstr(s, "cmd") || Q_strstr(s, "precache") || Q_strstr(s, "messagemode") || Q_strstr(s, "set") )
 		{
