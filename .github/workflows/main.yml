@@ -23,6 +23,7 @@ jobs:
            sudo apt purge containerd.io -y
            sudo apt update
            sudo apt install docker.io -y
+           mkdir build && mkdir xash3d-linux
            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
            docker build --build-arg BASE_IMAGE=32bit/buntu:16.04 -t 32bit/ubuntu:16.04 -f Dockerfile.i386 .
 
@@ -31,7 +32,7 @@ jobs:
        docker run --rm \
           -v /home/runner/work/xash3d/xash3d:/app \
           32bit/ubuntu:16.04 \
-          bash -c "cd /app && apt update && apt install cmake make gcc g++ libfontconfig1-dev libfreetype6-dev libstdc++6 libunwind-dev libsdl2-dev -y && git clone https://github.com/FWGS/vgui-dev hlsdk/ && mkdir build && cd build && cmake .. -DXASH_SDL=yes -DXASH_VGUI=yes -DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32 -DCMAKE_EXE_LINKER_FLAGS=-m32 -DHL_SDK_DIR=../hlsdk && make && cd CMakeFiles && mkdir xash3d-linux && find . -type f -name \*.so -exec mv -v {} ./xash3d-linux/ \;"
+          bash -c "cd /app && apt update && apt install cmake make gcc g++ libfontconfig1-dev libfreetype6-dev libstdc++6 libunwind-dev libsdl2-dev -y && git clone https://github.com/FWGS/vgui-dev hlsdk/ && cd build && cmake .. -DXASH_SDL=yes -DXASH_VGUI=yes -DCMAKE_CXX_FLAGS=-m32 -DCMAKE_C_FLAGS=-m32 -DCMAKE_EXE_LINKER_FLAGS=-m32 -DHL_SDK_DIR=../hlsdk && make && cd CMakeFiles && find . -type f -name \*.so -exec mv -v {} ../xash3d-linux/ \;"
      
    - name: Upload artifacts
      uses: actions/upload-artifact@v4
