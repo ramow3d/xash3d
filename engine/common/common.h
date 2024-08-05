@@ -196,22 +196,22 @@ typedef enum
 #include "crtlib.h"
 #include "base_cmd.h"
 
-#define XASH_VERSION	"0.19.4"		// engine current version
+#define XASH_VERSION	"0.19.2"		// engine current version
 
 // generic update page, see ShellExecute
 #define XASH_UPDATE_PAGE "https://github.com/hasandramali/xash3d-android-project/releases/latest"
 
 // PERFORMANCE INFO
 #define MIN_FPS         	1.0		// host minimum fps value for maxfps.
-#define MAX_FPS         	9999999999999.0		// upper limit for maxfps.
+#define MAX_FPS         	99999999999999999999.0		// upper limit for maxfps.
 
-#define MAX_FRAMETIME	9999999999999.0
+#define MAX_FRAMETIME	99999999999999999999.0
 #define MIN_FRAMETIME	0.0
 
 #define MAX_SLEEPTIME	10
 
 #define MAX_CMD_TOKENS	80		// cmd tokens
-#define MAX_ENTNUMBER	99999		// for server and client parsing
+#define MAX_ENTNUMBER	99999999		// for server and client parsing
 #define MAX_HEARTBEAT	-99999		// connection time
 #define QCHAR_WIDTH		16		// font width
 

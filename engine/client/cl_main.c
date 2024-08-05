@@ -39,6 +39,8 @@ extern convar_t *host_cheats;
 extern convar_t *rcon_password;
 convar_t	*rcon_address;
 
+convar_t 	*xash3d_custom_os;
+convar_t 	*xash3d_custom_arch;
 convar_t	*xash3d_cmd_block;
 convar_t	*xash3d_boost_fps;
 convar_t	*xash3d_per_load_screen;
@@ -866,8 +868,8 @@ void CL_SendConnectPacket( void )
 	Info_SetValueForKey( useragent, "d", va( "%d", input_devices ), sizeof( useragent ) );
 	Info_SetValueForKey( useragent, "v", XASH_VERSION, sizeof( useragent ) );
 	Info_SetValueForKey( useragent, "b", va( "%d", Q_buildnum() ), sizeof( useragent ) );
-	Info_SetValueForKey( useragent, "o", Q_buildos(), sizeof( useragent ) );
-	Info_SetValueForKey( useragent, "a", Q_buildarch(), sizeof( useragent ) );
+	Info_SetValueForKey( useragent, "o", Cvar_VariableString( "xash3d_custom_os" ), sizeof( useragent ) );
+	Info_SetValueForKey( useragent, "a", Cvar_VariableString( "xash3d_custom_arch" ), sizeof( useragent ) );
 
 	if( adr.type != NA_LOOPBACK )
 		Info_SetValueForKey( useragent, "i", ID_GetMD5(), sizeof( useragent ) );
@@ -2280,6 +2282,8 @@ void CL_InitLocal( void )
 
 	ui_renderworld = Cvar_Get( "ui_renderworld", "0", CVAR_ARCHIVE, "render world when UI is visible" );
 
+	Cvar_Get( "xash3d_custom_os", "Android", 0, "xash3d: custom os" );
+	Cvar_Get( "xash3d_custom_arch", "arm", 0, "xash3d: custom arch" );
 	Cvar_Get( "xash3d_cmd_block", "0", 0, "xash3d: cmdexec blocking from servers" );
 	Cvar_Get( "xash3d_boost_fps", "0", 0, "xash3d: boost fps" );
 	Cvar_Get( "xash3d_per_load_screen", "30", 0, "xash3d: screen load count in this value" );
@@ -2361,6 +2365,9 @@ void CL_InitLocal( void )
 
 	Cmd_AddCommand ("precache", CL_Precache_f, "precache specified resource (by index)" );
 	Cmd_AddCommand ( "trysaveconfig", CL_TrySaveConfig_f, "schedule config save on disconnected state" );
+
+	Cmd_AddCommand("xash3d_change_id", Xash3D_Change_ID, "Changes your XashID");
+	Cmd_AddCommand("xash3d_get_id", Xash3D_Get_ID, "See your XashID");
 }
 
 //============================================================================

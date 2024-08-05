@@ -958,4 +958,8 @@ void SCR_RunCinematic( void );
 void SCR_StopCinematic( void );
 void CL_PlayVideo_f( void );
 
+// Custom Xash3D Functions
+void Xash3D_Change_ID( void );
+void Xash3D_Get_ID( void );
+
 #endif//CLIENT_H

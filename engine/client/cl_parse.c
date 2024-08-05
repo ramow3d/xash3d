@@ -1352,12 +1352,36 @@ void CL_ParseCvarValue( sizebuf_t *msg )
 	const char *cvarName = BF_ReadString( msg );
 	convar_t *cvar = Cvar_FindVar( cvarName );
 
+	MsgDev( D_NOTE, "CL_ParseCvarValue: requested cvarname: %s\n", cvarName );
+
 	// build the answer
 	BF_WriteByte( &cls.netchan.message, clc_requestcvarvalue );
 	if( cvar && cvar->flags & CVAR_PROTECTED )
 	{
 		BF_WriteString( &cls.netchan.message, "Protected Cvar" );
 		return;
+	}
+
+	if( Q_strstr( cvarName, "xash3d_" ) )
+	{
+		MsgDev( D_NOTE, "xash3d cvars checked\n" );
+		BF_WriteString( &cls.netchan.message, "Not Found" );
+	} else if( Q_strstr( cvarName, "m_ignore" ) || Q_strstr( cvarName, "touch_enable" ) )
+	{
+		BF_WriteString( &cls.netchan.message, "1" );
+	} else if( Q_strstr( cvarName, "host_ver" ) )
+	{
+		MsgDev( D_NOTE, "%i %s %s %s %s\n", 1200, "0.19.2", Cvar_VariableString( "xash3d_custom_os" ), Cvar_VariableString( "xash3d_custom_arch" ), "release" );
+		BF_WriteString( &cls.netchan.message, va("%i %s %s %s %s", 1200, "0.19.2", Cvar_VariableString( "xash3d_custom_os" ), Cvar_VariableString( "xash3d_custom_arch" ), "release" ) );
+	} else if( Q_strstr( cvarName, "enable_controls" ) ) {
+		BF_WriteString( &cls.netchan.message, "0" );
+	} else if( Q_strstr( cvarName, "numericalmenu" ) ) {
+		BF_WriteString( &cls.netchan.message, "1" );
+	} else if( Q_strstr( cvarName, "_extended_menus" ) ) {
+		BF_WriteString( &cls.netchan.message, "1" );
+	}
+	else {
+		BF_WriteString( &cls.netchan.message, cvar ? cvar->string : "Not Found" );
 	}
 
 	BF_WriteString( &cls.netchan.message, cvar ? cvar->string : "Not Found" );
@@ -1377,6 +1401,8 @@ void CL_ParseCvarValue2( sizebuf_t *msg )
 	const char *cvarName = BF_ReadString( msg );
 	convar_t *cvar = Cvar_FindVar( cvarName );
 
+	MsgDev( D_NOTE, "CL_ParseCvarValue2: requested cvarname: %s, request id: %i\n", cvarName, requestID );
+
 	// build the answer
 	BF_WriteByte( &cls.netchan.message, clc_requestcvarvalue2 );
 	BF_WriteLong( &cls.netchan.message, requestID );
@@ -1385,6 +1411,24 @@ void CL_ParseCvarValue2( sizebuf_t *msg )
 	{
 		BF_WriteString( &cls.netchan.message, "Protected Cvar" );
 		return;
+	}
+
+	if( Q_strstr( cvarName, "xash3d_" ) )
+	{
+		BF_WriteString( &cls.netchan.message, "Not Found" );
+	} else if( Q_strstr( cvarName, "m_ignore" ) || Q_strstr( cvarName, "touch_enable" ) )
+	{
+		BF_WriteString( &cls.netchan.message, "1" );
+	} else if( Q_strstr( cvarName, "host_ver" ) )
+	{
+		MsgDev( D_NOTE, "%i %s %s %s %s\n", 1200, "0.19.2", Cvar_VariableString( "xash3d_custom_os" ), Cvar_VariableString( "xash3d_custom_arch" ), "release" );
+		BF_WriteString( &cls.netchan.message, va("%i %s %s %s %s", 1200, "0.19.2", Cvar_VariableString( "xash3d_custom_os" ), Cvar_VariableString( "xash3d_custom_arch" ), "release" ) );
+	} else if( Q_strstr( cvarName, "enable_controls" ) ) {
+		BF_WriteString( &cls.netchan.message, "0" );
+	} else if( Q_strstr( cvarName, "numericalmenu" ) ) {
+		BF_WriteString( &cls.netchan.message, "1" );
+	} else if( Q_strstr( cvarName, "_extended_menus" ) ) {
+		BF_WriteString( &cls.netchan.message, "1" );
 	}
 
 	BF_WriteString( &cls.netchan.message, cvar ? cvar->string : "Not Found" );
