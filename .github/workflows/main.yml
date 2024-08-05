@@ -23,7 +23,7 @@ jobs:
            sudo apt purge containerd.io -y
            sudo apt update
            sudo apt install docker.io -y
-           mkdir build && mkdir xash3d-linux
+           mkdir build && mkdir build/xash3d-linux
            docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
            docker build --build-arg BASE_IMAGE=32bit/buntu:16.04 -t 32bit/ubuntu:16.04 -f Dockerfile.i386 .
 
