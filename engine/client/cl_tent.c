@@ -1035,11 +1035,11 @@ TEMPENTITY *GAME_EXPORT CL_DefaultSprite( const vec3_t pos, int spriteIndex, flo
 	TEMPENTITY	*pTemp;
 	int		frameCount;
 
-	if( !spriteIndex || Mod_GetType( spriteIndex ) != mod_sprite )
+	/*if( !spriteIndex || Mod_GetType( spriteIndex ) != mod_sprite )
 	{
-		//MsgDev( D_INFO, "No Sprite %d!\n", spriteIndex );
+		MsgDev( D_INFO, "No Sprite %d!\n", spriteIndex );
 		return 0;
-	}
+	}*/
 
 	Mod_GetFrames( spriteIndex, &frameCount );
 
