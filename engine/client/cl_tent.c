@@ -1037,14 +1037,14 @@ TEMPENTITY *GAME_EXPORT CL_DefaultSprite( const vec3_t pos, int spriteIndex, flo
 
 	if( !spriteIndex || Mod_GetType( spriteIndex ) != mod_sprite )
 	{
-		MsgDev( D_INFO, "No Sprite %d!\n", spriteIndex );
-		return NULL;
+		//MsgDev( D_INFO, "No Sprite %d!\n", spriteIndex );
+		return 0;
 	}
 
 	Mod_GetFrames( spriteIndex, &frameCount );
 
 	pTemp = CL_TempEntAlloc( pos, Mod_Handle( spriteIndex ));
-	if( !pTemp ) return NULL;
+	if( !pTemp ) return 0;
 
 	pTemp->frameMax = frameCount - 1;
 	pTemp->entity.curstate.scale = 1.0f;
