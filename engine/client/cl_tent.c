@@ -1032,7 +1032,7 @@ Create an animated sprite
 */
 TEMPENTITY *GAME_EXPORT CL_DefaultSprite( const vec3_t pos, int spriteIndex, float framerate )
 {
-	/*TEMPENTITY	*pTemp;
+	TEMPENTITY	*pTemp;
 	int		frameCount;
 
 	if( !spriteIndex || Mod_GetType( spriteIndex ) != mod_sprite )
@@ -1055,7 +1055,7 @@ TEMPENTITY *GAME_EXPORT CL_DefaultSprite( const vec3_t pos, int spriteIndex, flo
 	pTemp->die = cl.time + (float)frameCount / framerate;
 	pTemp->entity.curstate.frame = 0;
 
-	return pTemp;*/
+	return pTemp;
 }
 
 /*
