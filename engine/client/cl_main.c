@@ -2232,9 +2232,9 @@ void CL_InitLocal( void )
 
 	r_oldparticles = Cvar_Get("r_oldparticles", "0", CVAR_ARCHIVE, "make some particle textures a simple square, like with software rendering");
 
-	cl_trace_events = Cvar_Get( "cl_trace_events", "0", CVAR_ARCHIVE|CVAR_CHEAT, "enable client event tracing (good for developers)" );
-	cl_trace_messages = Cvar_Get( "cl_trace_messages", "0", CVAR_ARCHIVE|CVAR_CHEAT, "enable message names tracing (good for developers)");
-	cl_trace_stufftext = Cvar_Get( "cl_trace_stufftext", "0", CVAR_ARCHIVE|CVAR_CHEAT, "enable stufftext commands tracing (good for developers)" );
+	cl_trace_events = Cvar_Get( "cl_trace_events", "0", CVAR_ARCHIVE, "enable client event tracing (good for developers)" );
+	cl_trace_messages = Cvar_Get( "cl_trace_messages", "0", CVAR_ARCHIVE, "enable message names tracing (good for developers)");
+	cl_trace_stufftext = Cvar_Get( "cl_trace_stufftext", "0", CVAR_ARCHIVE, "enable stufftext commands tracing (good for developers)" );
 	
         cl_glow_player           = Cvar_Get( "cl_glow_player", "0", CVAR_ARCHIVE, "Enable Glow Players" );
         cl_glow_player_red       = Cvar_Get( "cl_glow_player_red", "200", CVAR_ARCHIVE, "Player Glowcolor Red" );
