@@ -26,6 +26,7 @@ GNU General Public License for more details.
 #include "kbutton.h"
 #include "vgui_draw.h"
 #include "library.h"
+#include <studio.h>
 
 #define MAX_TOTAL_CMDS		16
 #define MIN_CMD_RATE		0.1
