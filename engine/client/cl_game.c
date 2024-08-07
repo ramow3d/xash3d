@@ -39,10 +39,6 @@ GNU General Public License for more details.
 char			cl_textbuffer[MAX_TEXTCHANNELS][512];
 client_textmessage_t	cl_textmessage[MAX_TEXTCHANNELS];
 
-#ifdef ANDROID
-int CL_ParseFog( const char *pszName, int iSize, void *pbuf );
-#endif
-
 static struct crosshair_s
 {
 	// crosshair members
