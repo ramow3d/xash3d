@@ -91,6 +91,8 @@ convar_t        *cl_glow_viewmodel_renderamt;
 convar_t	*hud_utf8;
 
 convar_t    *ui_renderworld;
+convar_t 	*cl_screenfade;
+
 //
 // userinfo
 //
@@ -104,6 +106,9 @@ convar_t	*hltv;
 client_t		cl;
 client_static_t	cls;
 clgame_static_t	clgame;
+
+float fog_rgb[3];
+float fog_den;
 
 //======================================================================
 qboolean CL_Active( void )
@@ -2248,7 +2253,7 @@ void CL_InitLocal( void )
 	cl_glow_viewmodel_blue = Cvar_Get( "cl_glow_viewmodel_blue", "31", 0, "Viewmodel blue Value" );
 	cl_glow_viewmodel_green = Cvar_Get( "cl_glow_viewmodel_green", "31", 0, "Viewmodel green Value" );
 	cl_glow_viewmodel_renderamt = Cvar_Get( "cl_glow_viewmodel_renderamt", "11", 0, "Viewmodel renderamt Value" );
-
+	cl_screenfade = Cvar_Get( "cl_screenfade", "0", 1, "enable or disable CL_ScreenFade func" );
 
 	// userinfo
 	Cvar_Get( "password", "", CVAR_USERINFO, "player password" );

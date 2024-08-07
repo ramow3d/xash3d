@@ -744,6 +744,7 @@ void CL_ParseTempEntity( sizebuf_t *msg );
 qboolean CL_DispatchUserMessage( const char *pszName, int iSize, void *pbuf );
 int CL_ParseScreenShake( const char *pszName, int iSize, void *pbuf );
 int CL_ParseScreenFade( const char *pszName, int iSize, void *pbuf );
+int CL_ParseFog( const char *pszName, int iSize, void *pbuf );
 
 //
 // cl_scrn.c
@@ -961,5 +962,7 @@ void CL_PlayVideo_f( void );
 // Custom Xash3D Functions
 void Xash3D_Change_ID( void );
 void Xash3D_Get_ID( void );
+extern float fog_rgb[3];
+extern float fog_den;
 
 #endif//CLIENT_H
