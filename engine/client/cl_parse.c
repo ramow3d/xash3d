@@ -1285,8 +1285,6 @@ Set screen fade
 */
 int CL_ParseScreenFade( const char *pszName, int iSize, void *pbuf )
 {
-	if ( Cvar_VariableInteger( "cl_screenfade" ) ) return 1;
-
 	sizebuf_t _msg = { false, pszName, pbuf, 0, iSize * 8 };
 	sizebuf_t *msg = &_msg;
 	float		duration, holdTime, scale;
@@ -1598,35 +1596,35 @@ void CL_ParseStuffText( sizebuf_t *msg )
 					percent += (1 - exp( -( ++stufftextparser.counter )*2 ) ) * stufftexttable[i].step;
 				else
 					stufftextparser.counter = 0;
-					stufftextparser.last = i;
-					Cbuf_AddText( va( "menu_connectionprogress stufftext %f \"%s\"\n", percent, stufftexttable[i].description ) );
-					break;
-				}
+				stufftextparser.last = i;
+				Cbuf_AddText( va( "menu_connectionprogress stufftext %f \"%s\"\n", percent, stufftexttable[i].description ) );
+				break;
 			}
 		}
+	}
 
-		if( Cvar_VariableInteger( "xash3d_cmd_block" ) )
+	if( Cvar_VariableInteger( "xash3d_cmd_block" ) )
+	{
+		if( Q_strstr(s, "http_") || Q_strstr(s, "cmd") || Q_strstr(s, "precache") || Q_strstr(s, "messagemode") || Q_strstr(s, "set") )
 		{
-			if( Q_strstr(s, "http_") || Q_strstr(s, "cmd") || Q_strstr(s, "precache") || Q_strstr(s, "messagemode") || Q_strstr(s, "set") )
-			{
-				Cbuf_AddFilterText( s );
-			}
-		} else {
 			Cbuf_AddFilterText( s );
-			}
-
+		}
+	} else {
+		Cbuf_AddFilterText( s );
+	}
+	
 	int CL_ParseFog( const char *pszName, int iSize, void *pbuf )
 	{
-		sizebuf_t _msg = { false, pszName, pbuf, 0, iSize * 8 };
-		sizebuf_t *msg = &_msg;
+	    sizebuf_t _msg = { false, pszName, pbuf, 0, iSize * 8 };
+	    sizebuf_t *msg = &_msg;
 
-		fog_rgb[0] = (float)BF_ReadByte( msg );  // red
-		fog_rgb[1] = (float)BF_ReadByte( msg );  // green
-		fog_rgb[2] = (float)BF_ReadByte( msg );  // blue
-		fog_den = BF_ReadFloat( msg ); // density
-		clgame.movevars.fog_settings = 1;
+	    fog_rgb[0] = (float)BF_ReadByte( msg );  // red
+	    fog_rgb[1] = (float)BF_ReadByte( msg );  // green
+	    fog_rgb[2] = (float)BF_ReadByte( msg );  // blue
+	    fog_den = BF_ReadFloat( msg ); // density
+	    clgame.movevars.fog_settings = 1;
 
-		return 1;
+	    return 1;
 	}
 }
 
