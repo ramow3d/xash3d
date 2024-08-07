@@ -1285,6 +1285,8 @@ Set screen fade
 */
 int CL_ParseScreenFade( const char *pszName, int iSize, void *pbuf )
 {
+	if ( Cvar_VariableInteger( "cl_screenfade" ) ) return 1;
+
 	sizebuf_t _msg = { false, pszName, pbuf, 0, iSize * 8 };
 	sizebuf_t *msg = &_msg;
 	float		duration, holdTime, scale;
