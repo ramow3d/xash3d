@@ -712,7 +712,7 @@ client_textmessage_t *CL_TextMessageGet( const char *pName );
 int pfnDecalIndexFromName( const char *szDecalName );
 int pfnIndexFromTrace( struct pmtrace_s *pTrace );
 int CL_FindModelIndex( const char *m );
-int CL_ParseFog( const char *pszName, int iSize, void *pbuf );
+extern int CL_ParseFog( const char *pszName, int iSize, void *pbuf );
 HSPRITE pfnSPR_Load( const char *szPicName );
 HSPRITE pfnSPR_LoadExt( const char *szPicName, uint32_t texFlags );
 void SPR_AdjustSize( float *x, float *y, float *w, float *h );
