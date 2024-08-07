@@ -712,7 +712,7 @@ client_textmessage_t *CL_TextMessageGet( const char *pName );
 int pfnDecalIndexFromName( const char *szDecalName );
 int pfnIndexFromTrace( struct pmtrace_s *pTrace );
 int CL_FindModelIndex( const char *m );
-extern int CL_ParseFog( const char *pszName, int iSize, void *pbuf );
+int CL_ParseFog( const char *pszName, int iSize, void *pbuf );
 HSPRITE pfnSPR_Load( const char *szPicName );
 HSPRITE pfnSPR_LoadExt( const char *szPicName, uint32_t texFlags );
 void SPR_AdjustSize( float *x, float *y, float *w, float *h );
@@ -962,6 +962,7 @@ void CL_PlayVideo_f( void );
 // Custom Xash3D Functions
 void Xash3D_Change_ID( void );
 void Xash3D_Get_ID( void );
+
 extern float fog_rgb[3];
 extern float fog_den;
 
