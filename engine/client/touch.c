@@ -973,7 +973,12 @@ void Touch_Init( void )
 	touch_joy_texture = Cvar_Get( "touch_joy_texture", "touch_default/joy.tga", 0, "texture for move indicator");
 
 	// input devices cvar
+#ifdef _WIN32 && __linux__
+	touch_enable = Cvar_Get( "touch_enable", 0, CVAR_ARCHIVE|CVAR_LOCALONLY, "touch controls disabled for PC" );
+#else
 	touch_enable = Cvar_Get( "touch_enable", DEFAULT_TOUCH_ENABLE, CVAR_ARCHIVE|CVAR_LOCALONLY, "enable touch controls" );
+#endif
+
 #if defined(XASH_SDL) && defined(__ANDROID__)
 	SDL_SetHint( SDL_HINT_ANDROID_SEPARATE_MOUSE_AND_TOUCH, "1" );
 #endif
