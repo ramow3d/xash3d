@@ -87,7 +87,7 @@ convar_t        *cl_glow_viewmodel_red;
 convar_t        *cl_glow_viewmodel_blue;
 convar_t        *cl_glow_viewmodel_green;
 convar_t        *cl_glow_viewmodel_renderamt;
-convar_t	*cl_muzzleflash_enabled
+convar_t	*cl_muzzleflash_enabled;
 
 convar_t	*hud_utf8;
 
