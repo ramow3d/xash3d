@@ -674,49 +674,50 @@ Host_FilterTime
 Returns false if the time is too short to run a frame
 ===================
 */
-qboolean Host_FilterTime( float time )
+qboolean Host_FilterTime(float time)
 {
-	static double	oldtime;
-	float		fps;
+    static double oldtime;
+    float fps;
 
-	host.realtime += time;
+    host.realtime += time;
 
-	// dedicated's tic_rate regulates server frame rate.  Don't apply fps filter here.
-	fps = host_maxfps->value;
+    // dedicated's tic_rate regulates server frame rate.  Don't apply fps filter here.
+    fps = host_maxfps->value;
 
-	if( fps != 0 )
-	{
-		float	minframetime;
+    if (fps != 0)
+    {
+        float minframetime;
 
-		// limit fps to within tolerable range
-		fps = bound( MIN_FPS, fps, MAX_FPS );
+        // limit fps to within tolerable range
+        fps = bound(MIN_FPS, fps, MAX_FPS);
 
-		minframetime = 1.0f / fps;
+        minframetime = 1.0f / fps;
 
-		if(( host.realtime - oldtime ) < minframetime )
-		{
-			// framerate is too high
-			//Sys_Sleep( 2000 * ( minframetime - ( host.realtime - oldtime ) ) );
-			return false;
-		}
-	}
+        if ((host.realtime - oldtime) < minframetime)
+        {
+            // framerate is too high
+            //Sys_Sleep(2000 * (minframetime - (host.realtime - oldtime)));
+            return false;
+        }
+    }
 
-	host.frametime = host.realtime - oldtime;
-	host.realframetime = bound( MIN_FRAMETIME, host.frametime, MAX_FRAMETIME );
-	oldtime = host.realtime;
+    if (host_framerate->value > 0)
+    {
+        fps = host_framerate->value;
+        if (fps > 1) fps = 1.0f / fps;
+        
+        host.frametime = fps;
+    }
+    else
+    {
+        host.frametime = host.realtime - oldtime;
+        host.frametime = bound(MIN_FRAMETIME, host.frametime, MAX_FRAMETIME);
+    }
 
-	if( host_framerate->value > 0 )
-	{
-		fps = host_framerate->value;
-		if( fps > 1 ) fps = 1.0f / fps;
-		host.frametime = fps;
-	}
-	else
-	{	// don't allow really long or short frames
-		host.frametime = bound( MIN_FRAMETIME, host.frametime, MAX_FRAMETIME );
-	}
-	
-	return true;
+    host.realframetime = bound(MIN_FRAMETIME, host.frametime, MAX_FRAMETIME);
+    oldtime = host.realtime;
+
+    return true;
 }
 
 /*
