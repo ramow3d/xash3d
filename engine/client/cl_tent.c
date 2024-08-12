@@ -757,8 +757,8 @@ Do muzzleflash
 */
 void GAME_EXPORT CL_MuzzleFlash( const vec3_t pos, int type )
 {
-	if (!CVAR_GET_FLOAT("cl_muzzleflash_enabled"))
-	    return;
+	if (Cvar_VariableValue("cl_muzzleflash_enabled") <= 0.0f)
+            return;
 
 	TEMPENTITY	*pTemp;
 	int		index, modelIndex, frameCount;
