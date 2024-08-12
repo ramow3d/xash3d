@@ -87,7 +87,7 @@ convar_t        *cl_glow_viewmodel_red;
 convar_t        *cl_glow_viewmodel_blue;
 convar_t        *cl_glow_viewmodel_green;
 convar_t        *cl_glow_viewmodel_renderamt;
-
+convar_t	*cl_muzzleflash_enabled
 
 convar_t	*hud_utf8;
 
@@ -2295,11 +2295,11 @@ void CL_InitLocal( void )
 	Cvar_Get( "xash3d_per_load_screen", "30", 0, "xash3d: screen load count in this value" );
 	Cvar_Get( "skin", "", CVAR_USERINFO, "player skin" ); // XDM 3.3 want this cvar
 	Cvar_Get( "cl_background", "0", CVAR_READ_ONLY, "indicates that background map is running" );
-	Cvar_Get( "cl_seebehindwall", "0", CVAR_ARCHIVE, "See players behind the wall" );
+	Cvar_Get( "cl_seebehindwall", "0", 0, "See players behind the wall" );
 	Cvar_Get( "cl_enable_compress", "0", CVAR_ARCHIVE, "request huffman compression from server" );
 	Cvar_Get( "cl_enable_split", "1", CVAR_ARCHIVE, "request packet split from server" );
 	Cvar_Get( "cl_enable_splitcompress", "0", CVAR_ARCHIVE, "request compressing all splitpackets" );
-
+	Cvar_Get( "cl_muzzleflash_enabled", "1", CVAR_ARCHIVE, "toggle muzzleflash sprites" );
 	Cvar_Get( "cl_maxoutpacket", "0", CVAR_ARCHIVE, "max outcoming packet size (equal cl_maxpacket if 0)" );
 
 	// these two added to shut up CS 1.5 about 'unknown' commands

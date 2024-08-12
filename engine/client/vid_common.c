@@ -849,22 +849,22 @@ void GL_InitCommands( void )
 	// system screen width and height (don't suppose for change from console at all)
 	renderinfo = Cvar_Get( "@renderinfo", "0", CVAR_READ_ONLY, "" ); // use ->modified value only
 	r_speeds = Cvar_Get( "r_speeds", "0", CVAR_ARCHIVE, "shows renderer speeds" );
-	r_fullbright = Cvar_Get( "r_fullbright", "0", CVAR_CHEAT, "disable lightmaps, get fullbright for entities" );
-	r_norefresh = Cvar_Get( "r_norefresh", "0", CVAR_LOCALONLY, "disable 3D rendering (use with caution)" );
+	r_fullbright = Cvar_Get( "r_fullbright", "0", CVAR_ARCHIVE, "disable lightmaps, get fullbright for entities" );
+	r_norefresh = Cvar_Get( "r_norefresh", "0", CVAR_ARCHIVE, "disable 3D rendering (use with caution)" );
 	r_lighting_extended = Cvar_Get( "r_lighting_extended", "1", CVAR_ARCHIVE, "allow to get lighting from world and bmodels" );
 	r_lighting_modulate = Cvar_Get( "r_lighting_modulate", "0.6", CVAR_ARCHIVE, "lightstyles modulate scale" );
 	r_lighting_ambient = Cvar_Get( "r_lighting_ambient", "0.3", CVAR_ARCHIVE, "map ambient lighting scale" );
 	r_adjust_fov = Cvar_Get( "r_adjust_fov", "1", CVAR_ARCHIVE, "making FOV adjustment for wide-screens" );
 	r_novis = Cvar_Get( "r_novis", "0", 0, "ignore vis information (perfomance test)" );
-	r_nocull = Cvar_Get( "r_nocull", "0", CVAR_LOCALONLY, "ignore frustrum culling (perfomance test)" );
+	r_nocull = Cvar_Get( "r_nocull", "0", CVAR_ARCHIVE, "ignore frustrum culling (perfomance test)" );
 	r_faceplanecull = Cvar_Get( "r_faceplanecull", "1", 0, "ignore face plane culling (perfomance test)" );
 	r_detailtextures = Cvar_Get( "r_detailtextures", "1", CVAR_ARCHIVE, "enable detail textures support, use \"2\" for auto-generate mapname_detail.txt" );
-	r_lockpvs = Cvar_Get( "r_lockpvs", "0", CVAR_CHEAT, "lockpvs area at current point (pvs test)" );
-	r_lockcull = Cvar_Get( "r_lockcull", "0", CVAR_CHEAT, "lock frustrum area at current point (cull test)" );
+	r_lockpvs = Cvar_Get( "r_lockpvs", "0", CVAR_ARCHIVE, "lockpvs area at current point (pvs test)" );
+	r_lockcull = Cvar_Get( "r_lockcull", "0", CVAR_ARCHIVE, "lock frustrum area at current point (cull test)" );
 	r_dynamic = Cvar_Get( "r_dynamic", "1", CVAR_ARCHIVE, "allow dynamic lighting (dlights, lightstyles)" );
-	r_lightmap = Cvar_Get( "r_lightmap", "0", CVAR_CHEAT, "lightmap debugging tool" );
+	r_lightmap = Cvar_Get( "r_lightmap", "0", CVAR_ARCHIVE, "lightmap debugging tool" );
 	r_fastsky = Cvar_Get( "r_fastsky", "0", CVAR_ARCHIVE, "enable algorhytm fo fast sky rendering (for old machines)" );
-	r_drawentities = Cvar_Get( "r_drawentities", "1", CVAR_CHEAT|CVAR_ARCHIVE, "render entities" );
+	r_drawentities = Cvar_Get( "r_drawentities", "1", 0, "render entities" );
 	r_flaresize = Cvar_Get( "r_flaresize", "200", CVAR_ARCHIVE, "set flares size" );
 	r_lefthand = Cvar_Get( "hand", "0", CVAR_ARCHIVE, "viewmodel handedness" );
 	r_decals = Cvar_Get( "r_decals", "4096", 0, "sets the maximum number of decals" );
@@ -873,7 +873,7 @@ void GL_InitCommands( void )
 	r_underwater_distortion = Cvar_Get( "r_underwater_distortion", "0.4", CVAR_ARCHIVE, "underwater distortion speed" );
 	mp_decals = Cvar_Get( "mp_decals", "300", CVAR_ARCHIVE, "sets the maximum number of decals in multiplayer" );
 
-	gl_picmip = Cvar_Get( "gl_picmip", "0", CVAR_GLCONFIG, "reduces resolution of textures by powers of 2" );
+	gl_picmip = Cvar_Get( "gl_picmip", "0", CVAR_ARCHIVE, "reduces resolution of textures by powers of 2" );
 	gl_skymip = Cvar_Get( "gl_skymip", "0", CVAR_GLCONFIG, "reduces resolution of skybox textures by powers of 2" );
 	gl_allow_software = Cvar_Get( "gl_allow_software", "0", CVAR_ARCHIVE, "allow OpenGL software emulation" );
 	gl_alphabits = Cvar_Get( "gl_alphabits", "8", CVAR_GLCONFIG, "pixelformat alpha bits (0 - auto)" );
