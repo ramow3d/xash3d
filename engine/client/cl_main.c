@@ -87,6 +87,17 @@ convar_t        *cl_glow_viewmodel_red;
 convar_t        *cl_glow_viewmodel_blue;
 convar_t        *cl_glow_viewmodel_green;
 convar_t        *cl_glow_viewmodel_renderamt;
+convar_t 	*cl_glow_worldmodel_blue;
+convar_t 	*cl_glow_worldmodel_red;
+convar_t 	*cl_glow_worldmodel_green;
+convar_t 	*cl_glow_worldmodel;
+convar_t 	*cl_glow_worldmodel_renderamt;
+convar_t 	*cl_glow_worldmodel;
+convar_t 	*cl_glow_worldmodel_height;
+convar_t 	*cl_glow_worldmodel_spin;
+convar_t	*viewmodel_lag_style;
+convar_t	*viewmodel_lag_scale;
+convar_t	*viewmodel_lag_speed;
 convar_t	*cl_muzzleflash_enabled;
 
 convar_t	*hud_utf8;
@@ -2313,6 +2324,16 @@ void CL_InitLocal( void )
 	cl_glow_viewmodel_blue = Cvar_Get( "cl_glow_viewmodel_blue", "31", 0, "Viewmodel blue Value" );
 	cl_glow_viewmodel_green = Cvar_Get( "cl_glow_viewmodel_green", "31", 0, "Viewmodel green Value" );
 	cl_glow_viewmodel_renderamt = Cvar_Get( "cl_glow_viewmodel_renderamt", "11", 0, "Viewmodel renderamt Value" );
+	cl_glow_worldmodel = Cvar_Get( "cl_glow_worldmodel", "0", 0, "toggle worldmodel glow" );
+	cl_glow_worldmodel_red = Cvar_Get( "cl_glow_worldmodel_red", "51", 0, "worldmdl red color" );
+	cl_glow_worldmodel_green = Cvar_Get( "cl_glow_worldmodel_green", "131", 0, "worldmdl green color " );
+	cl_glow_worldmodel_blue  = Cvar_Get( "cl_glow_worldmodel_blue", "11", 0, "worldmdl blue color" );
+	cl_glow_worldmodel_renderamt = Cvar_Get( "cl_glow_worldmodel_renderamt", "51", 0, "worldmodel renderamt");
+	cl_glow_worldmodel_height       = Cvar_Get( "cl_glow_worldmodel_height", "30", 1, "worldmodel height" );
+	cl_glow_worldmodel_spin = Cvar_Get("cl_glow_worldmodel_spin","45",1,"worldmodel spin speed");
+	viewmodel_lag_style = Cvar_Get( "viewmodel_lag_style", "0", 0, "toggle viewmodel lag (disable = 0)" );
+	viewmodel_lag_scale = Cvar_Get( "viewmodel_lag_scale", "1", 1, "set viewmodel lag scale" );
+	viewmodel_lag_speed = Cvar_Get( "viewmodel_lag_speed", "2", 1, "set viewmodel lag speed" );
 	cl_screenfade = Cvar_Get( "cl_screenfade", "0", 1, "enable or disable CL_ScreenFade func" );
 
 	// userinfo
