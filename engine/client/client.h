@@ -1098,5 +1098,28 @@ extern convar_t *cl_glow_worldmodel_renderamt;
 extern convar_t *cl_glow_worldmodel;
 extern convar_t *cl_glow_worldmodel_height;
 extern convar_t *cl_glow_worldmodel_spin;
+extern convar_t *xhair_alpha;
+extern convar_t *xhair_color_b;
+extern convar_t *xhair_color_r;
+extern convar_t *xhair_color_g;
+extern convar_t *xhair_dot;
+extern convar_t *xhair_dynamic_move;
+extern convar_t *xhair_dynamic_scale;
+extern convar_t *xhair_gap_useweaponvalue;
+extern convar_t *xhair_enable;
+extern convar_t *xhair_gap;
+extern convar_t *xhair_pad;
+extern convar_t *xhair_size;
+extern convar_t *xhair_t;
+extern convar_t *xhair_thick;
+extern convar_t *cl_nosmoke;
+
+#define MAX( a, b ) ( ( ( a ) > ( b ) ) ? ( a ) : ( b ) )
+#define MIN( a, b ) ( ( ( a ) < ( b ) ) ? ( a ) : ( b ) )
+qboolean IsAliveEntity( cl_entity_t *Entity );
+qboolean m_iThirdPerson;
+extern convar_t *cl_thirdperson_right;
+extern convar_t *cl_thirdperson_up;
+extern convar_t *cl_thirdperson_forward;
 
 #endif//CLIENT_H

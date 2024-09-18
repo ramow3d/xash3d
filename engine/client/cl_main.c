@@ -99,11 +99,29 @@ convar_t	*viewmodel_lag_style;
 convar_t	*viewmodel_lag_scale;
 convar_t	*viewmodel_lag_speed;
 convar_t	*cl_muzzleflash_enabled;
+convar_t 	*xhair_alpha;
+convar_t 	*xhair_color_b;
+convar_t 	*xhair_color_r;
+convar_t 	*xhair_color_g;
+convar_t 	*xhair_dot;
+convar_t 	*xhair_dynamic_move;
+convar_t 	*xhair_dynamic_scale;
+convar_t 	*xhair_gap_useweaponvalue;
+convar_t 	*xhair_enable;
+convar_t 	*xhair_gap;
+convar_t 	*xhair_pad;
+convar_t 	*xhair_size;
+convar_t 	*xhair_t;
+convar_t 	*xhair_thick;
+convar_t 	*cl_thirdperson_right;
+convar_t 	*cl_thirdperson_up;
+convar_t 	*cl_thirdperson_forward;
 
 convar_t	*hud_utf8;
 
 convar_t    *ui_renderworld;
 convar_t 	*cl_screenfade;
+convar_t 	*cl_nosmoke;
 
 //
 // userinfo
@@ -2282,6 +2300,24 @@ void CL_Escape_f( void )
 	else UI_SetActiveMenu( true );
 }
 
+qboolean IsAliveEntity( cl_entity_t *Entity )
+{
+	return ( Entity && !( Entity->curstate.effects & EF_NODRAW ) &&
+	         Entity->player && Entity->curstate.movetype != 6 && Entity->curstate.movetype != 0 );
+}
+
+void CL_ThirdPerson_f( void )
+{
+	if ( !m_iThirdPerson )
+	{
+		m_iThirdPerson = true;
+	}
+	else
+	{
+		m_iThirdPerson = false;
+	}
+}
+
 /*
 =================
 CL_InitLocal
@@ -2331,10 +2367,28 @@ void CL_InitLocal( void )
 	cl_glow_worldmodel_renderamt = Cvar_Get( "cl_glow_worldmodel_renderamt", "51", 0, "worldmodel renderamt");
 	cl_glow_worldmodel_height       = Cvar_Get( "cl_glow_worldmodel_height", "30", 1, "worldmodel height" );
 	cl_glow_worldmodel_spin = Cvar_Get("cl_glow_worldmodel_spin","45",1,"worldmodel spin speed");
+	cl_thirdperson_right = Cvar_Get("cl_thirdperson_right","0",1,"senin ananu cotunden s");
+	cl_thirdperson_up    = Cvar_Get( "cl_thirdperson_up", "31", 1, "ORHAN *kv müziði*" );
+	cl_thirdperson_forward = Cvar_Get( "cl_thirdperson_forward", "62", 1, "aynen aynen" );
 	viewmodel_lag_style = Cvar_Get( "viewmodel_lag_style", "0", 0, "toggle viewmodel lag (disable = 0)" );
 	viewmodel_lag_scale = Cvar_Get( "viewmodel_lag_scale", "1", 1, "set viewmodel lag scale" );
 	viewmodel_lag_speed = Cvar_Get( "viewmodel_lag_speed", "2", 1, "set viewmodel lag speed" );
 	cl_screenfade = Cvar_Get( "cl_screenfade", "0", 1, "enable or disable CL_ScreenFade func" );
+	cl_nosmoke               = Cvar_Get( "cl_nosmoke", "0", 1,"disable sumok" );
+	xhair_alpha              = Cvar_Get( "xhair_alpha", "1", 1, "xhair alpha" );
+	xhair_color_b            = Cvar_Get( "xhair_color_b", "31", 1, "xhair color blue" );
+	xhair_color_r            = Cvar_Get( "xhair_color_r", "31", 1, "xhair color red" );
+	xhair_color_g            = Cvar_Get( "xhair_color_g", "31", 1, "xhair color green" );
+	xhair_dot                = Cvar_Get( "xhair_dot", "0", 1, "xhair dot" );
+	xhair_dynamic_move       = Cvar_Get( "xhair_dynamic_move", "1", 1, "xhair dynamic mov" );
+	xhair_dynamic_scale      = Cvar_Get( "xhair_dynamic_scale", "2", 1, "xhair dynamic scale" );
+	xhair_gap_useweaponvalue = Cvar_Get( "xhair_gap_useweaponvalue", "0", 1, "xhair cl wp" );
+	xhair_enable             = Cvar_Get( "xhair_enable", "0", 1, "xhair enable" );
+	xhair_gap                = Cvar_Get( "xhair_gap", "1", 1, "xhair gap" );
+	xhair_pad                = Cvar_Get( "xhair_pad", "1", 1, "xhair pad" );
+	xhair_size               = Cvar_Get( "xhair_size", "1", 1, "xhair size" );
+	xhair_t                  = Cvar_Get( "xhair_t", "0", 1, "xhair upside dwwn T" );
+	xhair_thick              = Cvar_Get( "xhair_thick", "1", 1, "xhair thick" );
 
 	// userinfo
 	Cvar_Get( "password", "", CVAR_USERINFO, "player password" );
@@ -2454,6 +2508,7 @@ void CL_InitLocal( void )
 
 	Cmd_AddCommand("xash3d_change_id", Xash3D_Change_ID, "Changes your XashID");
 	Cmd_AddCommand("xash3d_get_id", Xash3D_Get_ID, "See your XashID");
+	Cmd_AddCommand( "thirdperson_new", CL_ThirdPerson_f, "ThirdPerson ON/OFF" );
 }
 
 //============================================================================

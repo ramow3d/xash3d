@@ -445,6 +445,53 @@ static void V_AddLag_HL2( vec3_t origin, vec3_t front )
 	VectorMA_2( delta_front, -1 * viewmodel_lag_scale->value, origin );
 }
 
+// custom thirdperson
+void ThirdPerson( )
+{
+	cl_entity_t *m_iLocal = CL_GetLocalPlayer( );
+	if ( IsAliveEntity( m_iLocal ))
+	{
+		vec3_t r, u, b, newViewOrg;
+
+		VectorScale( cl.refdef.right, cl_thirdperson_right->value, r );
+		VectorScale( cl.refdef.up, cl_thirdperson_up->value, u );
+		VectorScale( cl.refdef.forward, -cl_thirdperson_forward->value, b );
+		VectorAdd( cl.refdef.vieworg, r, newViewOrg );
+		VectorAdd( newViewOrg, u, newViewOrg );
+		VectorAdd( newViewOrg, b, newViewOrg );
+
+		pmtrace_t trace;
+		CL_SetTraceHull( 2 );
+		CL_PlayerTrace( cl.refdef.vieworg, newViewOrg, PM_TRACELINE_PHYSENTSONLY, -1, &trace );
+		if ( trace.fraction != 1.0f )
+			VectorCopy( trace.endpos, cl.refdef.vieworg );
+		else
+			VectorCopy( newViewOrg, cl.refdef.vieworg );
+	}
+}
+
+void FirstPerson( )
+{
+	cl_entity_t *m_iLocal = CL_GetLocalPlayer( );
+	if ( IsAliveEntity( m_iLocal ))
+	{
+		vec3_t r, u, b, newViewOrg;
+		VectorScale( cl.refdef.right, 0, r );
+		VectorScale( cl.refdef.up, 0, u );
+		VectorScale( cl.refdef.forward, 0, b );
+		VectorAdd( cl.refdef.vieworg, r, newViewOrg );
+		VectorAdd( newViewOrg, u, newViewOrg );
+		VectorAdd( newViewOrg, b, newViewOrg );
+		pmtrace_t trace;
+		CL_SetTraceHull( 2 );
+		CL_PlayerTrace( cl.refdef.vieworg, newViewOrg, PM_TRACELINE_PHYSENTSONLY, -1, &trace );
+		if ( trace.fraction != 1.0f )
+			VectorCopy( trace.endpos, cl.refdef.vieworg );
+		else
+			VectorCopy( newViewOrg, cl.refdef.vieworg );
+	}
+}
+
 /*
 ===============
 V_CalcRefDef
@@ -484,6 +531,18 @@ void V_CalcRefDef( void )
 				break;
 			}
 		}
+
+		if ( m_iThirdPerson )
+		{
+			ThirdPerson( );
+			Cvar_Set( "cam_command", "1" );
+		}
+		else
+		{
+		FirstPerson( );
+			Cvar_Set( "cam_command", "2" );
+		}
+
 		V_MergeOverviewRefdef( &cl.refdef );
 		R_RenderFrame( &cl.refdef, true );
 		cl.refdef.onlyClientDraw = false;

@@ -570,6 +570,14 @@ qboolean CL_AddVisibleEntity( cl_entity_t *ent, int entityType )
 		}
 	}
 
+	if ( cl_nosmoke->value != 0 )
+	{
+		if ( ( Q_strstr( ent->model->name, "gas_puff_01" ) || Q_strstr( ent->model->name, "fast_wallpuff" ) ) )
+		{
+			return;
+		}
+	}
+
 	if( entityType == ET_TEMPENTITY )
 	{
 		// copy actual origin and angles back to let StudioModelRenderer
