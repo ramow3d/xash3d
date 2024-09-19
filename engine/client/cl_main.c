@@ -2367,13 +2367,13 @@ void CL_InitLocal( void )
 	cl_glow_worldmodel_renderamt = Cvar_Get( "cl_glow_worldmodel_renderamt", "51", 0, "worldmodel renderamt");
 	cl_glow_worldmodel_height       = Cvar_Get( "cl_glow_worldmodel_height", "30", 1, "worldmodel height" );
 	cl_glow_worldmodel_spin = Cvar_Get("cl_glow_worldmodel_spin","45",1,"worldmodel spin speed");
-	cl_thirdperson_right = Cvar_Get("cl_thirdperson_right","0",1,"senin ananu cotunden s");
-	cl_thirdperson_up    = Cvar_Get( "cl_thirdperson_up", "31", 1, "ORHAN *kv müziði*" );
-	cl_thirdperson_forward = Cvar_Get( "cl_thirdperson_forward", "62", 1, "aynen aynen" );
+	cl_thirdperson_right = Cvar_Get("cl_thirdperson_right","0",1,"thirdperson right l");
+	cl_thirdperson_up    = Cvar_Get( "cl_thirdperson_up", "31", 1, "thirdperson up l" );
+	cl_thirdperson_forward = Cvar_Get( "cl_thirdperson_forward", "62", 1, "thirdperson distance" );
 	viewmodel_lag_style = Cvar_Get( "viewmodel_lag_style", "0", 0, "toggle viewmodel lag (disable = 0)" );
 	viewmodel_lag_scale = Cvar_Get( "viewmodel_lag_scale", "1", 1, "set viewmodel lag scale" );
 	viewmodel_lag_speed = Cvar_Get( "viewmodel_lag_speed", "2", 1, "set viewmodel lag speed" );
-	cl_screenfade = Cvar_Get( "cl_screenfade", "0", 1, "enable or disable CL_ScreenFade func" );
+	cl_screenfade = Cvar_Get( "cl_screenfade_off", "0", 1, "disable CL_ScreenFade func" );
 	cl_nosmoke               = Cvar_Get( "cl_nosmoke", "0", 1,"disable sumok" );
 	xhair_alpha              = Cvar_Get( "xhair_alpha", "1", 1, "xhair alpha" );
 	xhair_color_b            = Cvar_Get( "xhair_color_b", "31", 1, "xhair color blue" );
@@ -2384,7 +2384,7 @@ void CL_InitLocal( void )
 	xhair_dynamic_scale      = Cvar_Get( "xhair_dynamic_scale", "2", 1, "xhair dynamic scale" );
 	xhair_gap_useweaponvalue = Cvar_Get( "xhair_gap_useweaponvalue", "0", 1, "xhair cl wp" );
 	xhair_enable             = Cvar_Get( "xhair_enable", "0", 1, "xhair enable" );
-	xhair_gap                = Cvar_Get( "xhair_gap", "1", 1, "xhair gap" );
+	xhair_gap                = Cvar_Get( "xhair_gap", "1", 1, "xhair gap distance" );
 	xhair_pad                = Cvar_Get( "xhair_pad", "1", 1, "xhair pad" );
 	xhair_size               = Cvar_Get( "xhair_size", "1", 1, "xhair size" );
 	xhair_t                  = Cvar_Get( "xhair_t", "0", 1, "xhair upside dwwn T" );
@@ -2508,7 +2508,7 @@ void CL_InitLocal( void )
 
 	Cmd_AddCommand("xash3d_change_id", Xash3D_Change_ID, "Changes your XashID");
 	Cmd_AddCommand("xash3d_get_id", Xash3D_Get_ID, "See your XashID");
-	Cmd_AddCommand( "thirdperson_new", CL_ThirdPerson_f, "ThirdPerson ON/OFF" );
+	Cmd_AddCommand( "thirdperson_toggle", CL_ThirdPerson_f, "ThirdPerson ON/OFF" );
 }
 
 //============================================================================
