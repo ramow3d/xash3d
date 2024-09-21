@@ -2373,7 +2373,7 @@ void CL_InitLocal( void )
 	viewmodel_lag_style = Cvar_Get( "viewmodel_lag_style", "0", 0, "toggle viewmodel lag (disable = 0)" );
 	viewmodel_lag_scale = Cvar_Get( "viewmodel_lag_scale", "1", 1, "set viewmodel lag scale" );
 	viewmodel_lag_speed = Cvar_Get( "viewmodel_lag_speed", "2", 1, "set viewmodel lag speed" );
-	cl_screenfade = Cvar_Get( "cl_screenfade_off", "0", 1, "disable CL_ScreenFade func" );
+	cl_screenfade = Cvar_Get( "cl_screenfade", "0", 1, "if value 1 = disables CL_ScreenFade func" );
 	cl_nosmoke               = Cvar_Get( "cl_nosmoke", "0", 1,"disable sumok" );
 	xhair_alpha              = Cvar_Get( "xhair_alpha", "1", 1, "xhair alpha" );
 	xhair_color_b            = Cvar_Get( "xhair_color_b", "31", 1, "xhair color blue" );
