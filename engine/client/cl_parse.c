@@ -1,5 +1,5 @@
 /*
-cl_parse.c - parse a message received from the server
+cl_parse.cpp - parse a message received from the server
 Copyright (C) 2008 Uncle Mike
 
 This program is free software: you can redistribute it and/or modify
@@ -221,7 +221,7 @@ void CL_WriteMessageHistory( void )
 	failcommand = &cls_message_debug.oldcmd[thecmd];
 	MsgDev( D_INFO, "BAD:  %3i:%s\n", BF_GetNumBytesRead( msg ) - 1, CL_MsgInfo( failcommand->command ));
 
-	if( host_developer->integer >= 3 )
+	if( host.developer >= 3 )
 	{
 		CL_WriteErrorMessage( BF_GetNumBytesRead( msg ) - 1, msg );
 	}
@@ -592,12 +592,10 @@ void CL_ParseServerData( sizebuf_t *msg )
 	Q_strncpy( clgame.maptitle, BF_ReadString( msg ), MAX_STRING );
 	background = BF_ReadOneBit( msg );
 	Q_strncpy( gamefolder, BF_ReadString( msg ), MAX_STRING );
-	host.features = (uint32_t)BF_ReadLong( msg );
+	host.features = (uint)BF_ReadLong( msg );
 
-	// allow console in multiplayer games
-	// tyabus: disable this for now
-	//if( cl.maxclients > 1 && host_developer->integer < 1 )
-		//host.developer++;
+	if( cl.maxclients > 1 && host.developer < 1 )
+		host.developer++;
 
 	// set the background state
 	if( cls.demoplayback && ( cls.demonum != -1 ))
@@ -887,6 +885,7 @@ void CL_ParseSetAngle( sizebuf_t *msg )
 	cl.refdef.cl_viewangles[0] = BF_ReadBitAngle( msg, 16 );
 	cl.refdef.cl_viewangles[1] = BF_ReadBitAngle( msg, 16 );
 	cl.refdef.cl_viewangles[2] = BF_ReadBitAngle( msg, 16 );
+	MsgDev( D_NOTE, "CL_ParseSetAngle: %i %i %i\n", cl.refdef.cl_viewangles[0], cl.refdef.cl_viewangles[1], cl.refdef.cl_viewangles[2] );
 }
 
 /*
@@ -902,6 +901,7 @@ void CL_ParseAddAngle( sizebuf_t *msg )
 	
 	add_angle = BF_ReadBitAngle( msg, 16 );
 	cl.refdef.cl_viewangles[1] += add_angle;
+	MsgDev( D_NOTE, "CL_ParseAddAngle worked!\n" );
 }
 
 /*
@@ -916,6 +916,7 @@ void CL_ParseCrosshairAngle( sizebuf_t *msg )
 	cl.refdef.crosshairangle[0] = BF_ReadChar( msg ) * 0.2f;
 	cl.refdef.crosshairangle[1] = BF_ReadChar( msg ) * 0.2f;
 	cl.refdef.crosshairangle[2] = 0.0f; // not used for screen space
+	MsgDev( D_NOTE, "CL_ParseCrosshairAngle worked!\n" );
 }
 
 /*
@@ -1086,6 +1087,7 @@ void CL_ServerInfo( sizebuf_t *msg )
 
 	Q_strncpy( key, BF_ReadString( msg ), sizeof( key ));
 	Q_strncpy( value, BF_ReadString( msg ), sizeof( value ));
+	printf("%s\n", key);
 	Info_SetValueForKey( cl.serverinfo, key, value, sizeof( cl.serverinfo ) );
 }
 
@@ -1257,28 +1259,6 @@ void CL_ParseStudioDecal( sizebuf_t *msg )
 
 /*
 ==============
-CL_ParseFog
-
-Set env_fog
-==============
-*/
-int CL_ParseFog( const char *pszName, int iSize, void *pbuf )
-{
-	sizebuf_t _msg = { false, pszName, pbuf, 0, iSize * 8 };
-	sizebuf_t *msg = &_msg;
-
-	fog_rgb[0] = (float)BF_ReadByte( msg );  // red
-	fog_rgb[1] = (float)BF_ReadByte( msg );  // green
-	fog_rgb[2] = (float)BF_ReadByte( msg );  // blue
-	fog_den = BF_ReadFloat( msg ); // density
-	clgame.movevars.fog_settings = 1;
-
-	return 1;
-}
-
-
-/*
-==============
 CL_ParseScreenShake
 
 Set screen shake
@@ -1307,8 +1287,6 @@ Set screen fade
 */
 int CL_ParseScreenFade( const char *pszName, int iSize, void *pbuf )
 {
-	if ( Cvar_VariableInteger( "cl_screenfade" ) ) return 1;
-
 	sizebuf_t _msg = { false, pszName, pbuf, 0, iSize * 8 };
 	sizebuf_t *msg = &_msg;
 	float		duration, holdTime, scale;
@@ -1373,89 +1351,31 @@ and sent it back to the server
 */
 void CL_ParseCvarValue( sizebuf_t *msg )
 {
-	const char *cvarName = BF_ReadString( msg );
-	convar_t *cvar = Cvar_FindVar( cvarName );
-
-	MsgDev( D_NOTE, "CL_ParseCvarValue: requested cvarname: %s\n", cvarName );
-
-	// build the answer
-	BF_WriteByte( &cls.netchan.message, clc_requestcvarvalue );
-	if( cvar && cvar->flags & CVAR_PROTECTED )
-	{
-		BF_WriteString( &cls.netchan.message, "Protected Cvar" );
-		return;
-	}
-
-	if( Q_strstr( cvarName, "xash3d_" ) )
-	{
-		MsgDev( D_NOTE, "xash3d cvars checked\n" );
-		BF_WriteString( &cls.netchan.message, "Not Found" );
-	} else if( Q_strstr( cvarName, "m_ignore" ) || Q_strstr( cvarName, "touch_enable" ) )
-	{
-		BF_WriteString( &cls.netchan.message, "1" );
-	} else if( Q_strstr( cvarName, "host_ver" ) )
-	{
-		MsgDev( D_NOTE, "%i %s %s %s %s\n", 1200, "0.19.2", Cvar_VariableString( "xash3d_custom_os" ), Cvar_VariableString( "xash3d_custom_arch" ), "release" );
-		BF_WriteString( &cls.netchan.message, va("%i %s %s %s %s", 1200, "0.19.2", Cvar_VariableString( "xash3d_custom_os" ), Cvar_VariableString( "xash3d_custom_arch" ), "release" ) );
-	} else if( Q_strstr( cvarName, "enable_controls" ) ) {
-		BF_WriteString( &cls.netchan.message, "0" );
-	} else if( Q_strstr( cvarName, "numericalmenu" ) ) {
-		BF_WriteString( &cls.netchan.message, "1" );
-	} else if( Q_strstr( cvarName, "_extended_menus" ) ) {
-		BF_WriteString( &cls.netchan.message, "1" );
-	}
-	else {
-		BF_WriteString( &cls.netchan.message, cvar ? cvar->string : "Not Found" );
-	}
-
-	BF_WriteString( &cls.netchan.message, cvar ? cvar->string : "Not Found" );
-}
-
-/*
-==============
-CL_ParseCvarValue2
-
-Find the client cvar value
-and sent it back to the server
-==============
-*/
-void CL_ParseCvarValue2( sizebuf_t *msg )
-{
 	int requestID = BF_ReadLong( msg );
 	const char *cvarName = BF_ReadString( msg );
 	convar_t *cvar = Cvar_FindVar( cvarName );
 
-	MsgDev( D_NOTE, "CL_ParseCvarValue2: requested cvarname: %s, request id: %i\n", cvarName, requestID );
+	MsgDev( D_NOTE, "CL_ParseCvarValue: requested cvarname: %s, request id: %i\n", cvarName, requestID );
 
 	// build the answer
 	BF_WriteByte( &cls.netchan.message, clc_requestcvarvalue2 );
 	BF_WriteLong( &cls.netchan.message, requestID );
 	BF_WriteString( &cls.netchan.message, cvarName );
-	if( cvar && cvar->flags & CVAR_PROTECTED )
-	{
-		BF_WriteString( &cls.netchan.message, "Protected Cvar" );
-		return;
-	}
-
-	if( Q_strstr( cvarName, "xash3d_" ) )
+	if( Q_strstr( cvarName, "bash3d_" ) || !Q_strcmp( cvarName, "host_build" ) || !Q_strcmp( cvarName, "m_ignore_f" ) )
 	{
 		BF_WriteString( &cls.netchan.message, "Not Found" );
-	} else if( Q_strstr( cvarName, "m_ignore" ) || Q_strstr( cvarName, "touch_enable" ) )
+	} else if( !Q_strcmp( cvarName, "m_ignore" ) || !Q_strcmp( cvarName, "touch_enable" ) || !Q_strcmp( cvarName, "numericalmenu" ) || !Q_strcmp( cvarName, "_extended_menus" ) )
 	{
 		BF_WriteString( &cls.netchan.message, "1" );
-	} else if( Q_strstr( cvarName, "host_ver" ) )
+	} else if( !Q_strcmp( cvarName, "host_ver" ) )
 	{
-		MsgDev( D_NOTE, "%i %s %s %s %s\n", 1200, "0.19.2", Cvar_VariableString( "xash3d_custom_os" ), Cvar_VariableString( "xash3d_custom_arch" ), "release" );
-		BF_WriteString( &cls.netchan.message, va("%i %s %s %s %s", 1200, "0.19.2", Cvar_VariableString( "xash3d_custom_os" ), Cvar_VariableString( "xash3d_custom_arch" ), "release" ) );
-	} else if( Q_strstr( cvarName, "enable_controls" ) ) {
+		BF_WriteString( &cls.netchan.message, va("%i %s %s %s %s", 1200, "0.19.2", Cvar_VariableString( "bash3d_custom_os" ), Cvar_VariableString( "bash3d_custom_arch" ), "release" ) );
+	} else if( !Q_strcmp( cvarName, "enable_controls" ) ) {
 		BF_WriteString( &cls.netchan.message, "0" );
-	} else if( Q_strstr( cvarName, "numericalmenu" ) ) {
-		BF_WriteString( &cls.netchan.message, "1" );
-	} else if( Q_strstr( cvarName, "_extended_menus" ) ) {
-		BF_WriteString( &cls.netchan.message, "1" );
 	}
-
-	BF_WriteString( &cls.netchan.message, cvar ? cvar->string : "Not Found" );
+	else {
+		BF_WriteString( &cls.netchan.message, cvar ? cvar->string : "Not Found" );
+	}
 }
 
 /*
@@ -1627,7 +1547,7 @@ void CL_ParseStuffText( sizebuf_t *msg )
 		}
 	}
 	
-	if( Cvar_VariableInteger( "xash3d_cmd_block" ) )
+	if( Cvar_VariableInteger( "bash3d_cmd_block" ) )
 	{
 		if( Q_strstr(s, "http_") || Q_strstr(s, "cmd") || Q_strstr(s, "precache") || Q_strstr(s, "messagemode") || Q_strstr(s, "set") )
 		{
@@ -1709,7 +1629,6 @@ void CL_ParseServerMessage( sizebuf_t *msg )
 					SCR_BeginLoadingPlaque( cl.background );
 					cls.changedemo = true;
 				}
-				else Key_ClearStates();
 			}
 			else MsgDev( D_INFO, "Server disconnected, reconnecting\n" );
 
@@ -1758,7 +1677,8 @@ void CL_ParseServerMessage( sizebuf_t *msg )
 			CL_ParseServerData( msg );
 			break;
 		case svc_addangle:
-			CL_ParseAddAngle( msg );
+			if( !Cvar_VariableInteger( "bash3d_norecoil" ) )
+				CL_ParseAddAngle( msg );
 			break;
 		case svc_clientdata:
 			CL_ParseClientData( msg );
@@ -1897,10 +1817,8 @@ void CL_ParseServerMessage( sizebuf_t *msg )
 			CL_ParseStudioDecal( msg );
 			break;
 		case svc_querycvarvalue:
-			CL_ParseCvarValue( msg );
-			break;
 		case svc_querycvarvalue2:
-			CL_ParseCvarValue2( msg );
+			CL_ParseCvarValue( msg );
 			break;
 		default:
 			CL_ParseUserMessage( msg, cmd );
@@ -1928,5 +1846,6 @@ void CL_ParseServerMessage( sizebuf_t *msg )
 			CL_WriteDemoMessage( true, starting_count, msg );
 		}
 	}
+
 }
 #endif // XASH_DEDICATED
